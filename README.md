@@ -21,10 +21,10 @@ npm run reels           # out/reels.mp4
 npx remotion still FeedPost out/post.png --props='{"titulo":"...","destaque":"..."}'
 ```
 
-Boas-vindas para um cliente (logo em `public/clientes/`):
+Boas-vindas para um cliente (logo em `public/clientes/`, props em `props/`; `logoRedondo: true` quando o logo já é um selo redondo):
 
 ```bash
-npx remotion render BoasVindas out/boas-vindas.mp4 --props='{"cliente":"Padaria Pão Quente","logo":"clientes/padaria.png","segmento":"PADARIA ARTESANAL","arrobaCliente":"@paoquente","saudacao":"Seja bem-vinda,"}'
+npx remotion render BoasVindas out/boas-vindas.mp4 --props=props/trend-cable.json
 ```
 
 Trilhas próprias, sintetizadas e livres de direitos: `python3 scripts/trilha.py public/audio/trilha-120bpm.wav` e `python3 scripts/trilha_boas_vindas.py public/audio/trilha-boas-vindas.wav`.

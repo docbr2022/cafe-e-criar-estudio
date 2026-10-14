@@ -21,6 +21,7 @@ export const BOAS_VINDAS_DURACAO = 450;
 export type BoasVindasProps = {
   cliente: string; // nome como deve aparecer no vídeo
   logo: string | null; // arquivo em public/ (ex.: "clientes/padaria.png") ou URL; null usa as iniciais
+  logoRedondo: boolean; // true quando o logo já é um selo redondo: ele preenche o círculo inteiro
   segmento: string; // linha pequena acima do nome (ex.: "CONFEITARIA ARTESANAL"); "" esconde
   arrobaCliente: string | null;
   gancho: [string, string, string]; // a última linha fica em amarelo
@@ -36,6 +37,7 @@ export type BoasVindasProps = {
 export const boasVindasPadrao: BoasVindasProps = {
   cliente: "Nome do Cliente",
   logo: null,
+  logoRedondo: false,
   segmento: "SEGMENTO DO CLIENTE",
   arrobaCliente: "@cliente",
   gancho: ["Tem gente", "nova no", "café."],
@@ -62,7 +64,7 @@ const iniciais = (nome: string) =>
 const tamanhoNome = (nome: string) => (nome.length <= 10 ? 170 : nome.length <= 16 ? 130 : nome.length <= 24 ? 108 : 88);
 
 // Selo redondo com o logo do cliente (ou as iniciais enquanto não temos o logo).
-const SeloCliente: React.FC<{ cliente: string; logo: string | null; tamanho: number; brilho?: number }> = ({ cliente, logo, tamanho, brilho = 0 }) => (
+const SeloCliente: React.FC<{ cliente: string; logo: string | null; redondo?: boolean; tamanho: number; brilho?: number }> = ({ cliente, logo, redondo, tamanho, brilho = 0 }) => (
   <div
     style={{
       width: tamanho,
@@ -77,7 +79,10 @@ const SeloCliente: React.FC<{ cliente: string; logo: string | null; tamanho: num
     }}
   >
     {logo ? (
-      <Img src={fonteLogo(logo)} style={{ width: "70%", height: "70%", objectFit: "contain" }} />
+      <Img
+        src={fonteLogo(logo)}
+        style={redondo ? { width: "100%", height: "100%", objectFit: "cover", transform: "scale(1.04)" } : { width: "70%", height: "70%", objectFit: "contain" }}
+      />
     ) : (
       <div style={{ fontFamily: fontes.titulo, fontWeight: 800, fontSize: tamanho * 0.4, color: cores.preto, lineHeight: 1 }}>{iniciais(cliente)}</div>
     )}
@@ -249,7 +254,7 @@ const Suspense: React.FC<BoasVindasProps> = ({ suspense }) => {
 };
 
 // 3. Revelação (120–210): drop da trilha, logo e nome do cliente.
-const Revelacao: React.FC<BoasVindasProps> = ({ cliente, logo, segmento }) => {
+const Revelacao: React.FC<BoasVindasProps> = ({ cliente, logo, logoRedondo, segmento }) => {
   const f = useCurrentFrame();
   const { fps } = useVideoConfig();
   const s = spring({ frame: f, fps, config: { damping: 11, stiffness: 140 } });
@@ -296,7 +301,7 @@ const Revelacao: React.FC<BoasVindasProps> = ({ cliente, logo, segmento }) => {
           transform: `scale(${0.2 + 0.8 * s + pulso(f) * 0.025}) rotate(${(1 - s) * -25}deg)`,
         }}
       >
-        <SeloCliente cliente={cliente} logo={logo} tamanho={600} brilho={pulso(f)} />
+        <SeloCliente cliente={cliente} logo={logo} redondo={logoRedondo} tamanho={600} brilho={pulso(f)} />
       </div>
       <div style={{ position: "absolute", top: 1110, left: 70, right: 70, display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center" }}>
         {segmento && <Digita texto={segmento} em={16} dur={14} style={{ ...kicker, color: cores.amareloVivo, marginBottom: 14 }} />}
@@ -310,7 +315,7 @@ const Revelacao: React.FC<BoasVindasProps> = ({ cliente, logo, segmento }) => {
 };
 
 // 4. Brinde (210–300): duas xícaras se encontram no tempo forte (quadro 240).
-const Brinde: React.FC<BoasVindasProps> = ({ cliente, logo, brinde }) => {
+const Brinde: React.FC<BoasVindasProps> = ({ cliente, logo, logoRedondo, brinde }) => {
   const f = useCurrentFrame();
   const entra = prog(f, 0, 10);
   const BATE = 30;
@@ -338,7 +343,7 @@ const Brinde: React.FC<BoasVindasProps> = ({ cliente, logo, brinde }) => {
       </div>
       <div style={{ position: "absolute", left: 575 + afast, top: 800, transform: `rotate(${-giro}deg)`, transformOrigin: "14% 95%" }}>
         <Xicara tamanho={400} contorno={cores.preto} cafe={cores.amareloVivo} fundo={cores.amareloVivo} nivel={1} vapor={1}>
-          <SeloCliente cliente={cliente} logo={logo} tamanho={180} />
+          <SeloCliente cliente={cliente} logo={logo} redondo={logoRedondo} tamanho={180} />
         </Xicara>
       </div>
       {f >= BATE && (
@@ -416,7 +421,7 @@ const Promessas: React.FC<BoasVindasProps> = ({ promessas }) => {
 };
 
 // 6. Encerramento (360–450)
-const Encerramento: React.FC<BoasVindasProps> = ({ cliente, logo, saudacao, convite, arroba, arrobaCliente }) => {
+const Encerramento: React.FC<BoasVindasProps> = ({ cliente, logo, logoRedondo, saudacao, convite, arroba, arrobaCliente }) => {
   const f = useCurrentFrame();
   const tam = Math.min(tamanhoNome(cliente), 130);
   return (
@@ -438,7 +443,7 @@ const Encerramento: React.FC<BoasVindasProps> = ({ cliente, logo, saudacao, conv
         );
       })}
       <Pop em={0} de={0.5}>
-        <SeloCliente cliente={cliente} logo={logo} tamanho={300} brilho={pulso(f) * 0.6} />
+        <SeloCliente cliente={cliente} logo={logo} redondo={logoRedondo} tamanho={300} brilho={pulso(f) * 0.6} />
       </Pop>
       <div style={{ textAlign: "center" }}>
         <Revela em={4} style={{ fontFamily: fontes.titulo, fontWeight: 700, fontSize: 84, color: cores.branco }}>
