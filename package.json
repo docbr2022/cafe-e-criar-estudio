@@ -1,0 +1,20 @@
+{
+  "name": "cafe-e-criar-estudio",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio",
+    "arte": "remotion still FeedPost out/arte-feed.png",
+    "reels": "remotion render Reels out/reels.mp4"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.357",
+    "@remotion/fonts": "^4.0.357",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.357"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "typescript": "5.6.3"
+  }
+}
