@@ -6,6 +6,8 @@ Templates da Café e Criar Marketing Design em [Remotion](https://www.remotion.d
 |---|---|---|
 | `FeedPost` | 1080×1350 (4:5), imagem | Arte de feed do Instagram |
 | `Reels` | 1080×1920 (9:16), 9 s a 30 fps | Reels e Stories |
+| `ReelsOferta` | 1080×1920 (9:16), 15 s a 30 fps, com trilha | Reels de oferta com cortes no tempo da música |
+| `BoasVindas` | 1080×1920 (9:16), 15 s a 30 fps, com trilha | Boas-vindas a cliente novo (nome e logo como props) |
 
 Os textos de cada peça são props (`kicker`, `titulo`, `destaque`, `texto`, `cta`...), então uma nova peça não exige mexer no layout.
 
@@ -18,6 +20,14 @@ npm run arte            # out/arte-feed.png
 npm run reels           # out/reels.mp4
 npx remotion still FeedPost out/post.png --props='{"titulo":"...","destaque":"..."}'
 ```
+
+Boas-vindas para um cliente (logo em `public/clientes/`):
+
+```bash
+npx remotion render BoasVindas out/boas-vindas.mp4 --props='{"cliente":"Padaria Pão Quente","logo":"clientes/padaria.png","segmento":"PADARIA ARTESANAL","arrobaCliente":"@paoquente","saudacao":"Seja bem-vinda,"}'
+```
+
+Trilhas próprias, sintetizadas e livres de direitos: `python3 scripts/trilha.py public/audio/trilha-120bpm.wav` e `python3 scripts/trilha_boas_vindas.py public/audio/trilha-boas-vindas.wav`.
 
 As fontes ficam em `public/fontes` e os logos em `public/`, então o render não depende de internet.
 
