@@ -11,6 +11,7 @@
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "@remotion/cli": "4.0.357",
     "@remotion/fonts": "^4.0.357",
+    "@remotion/media-utils": "4.0.357",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "remotion": "4.0.357"

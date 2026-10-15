@@ -8,6 +8,7 @@ Templates da Café e Criar Marketing Design em [Remotion](https://www.remotion.d
 | `Reels` | 1080×1920 (9:16), 9 s a 30 fps | Reels e Stories |
 | `ReelsOferta` | 1080×1920 (9:16), 15 s a 30 fps, com trilha | Reels de oferta com cortes no tempo da música |
 | `BoasVindas` | 1080×1920 (9:16), 15 s a 30 fps, com trilha | Boas-vindas a cliente novo (nome e logo como props) |
+| `BoasVindasRock` | 1080×1920 (9:16), 20 s a 30 fps, rock clássico | Boas-vindas com raios, cabos, letreiros e equalizador reagindo ao áudio |
 
 Os textos de cada peça são props (`kicker`, `titulo`, `destaque`, `texto`, `cta`...), então uma nova peça não exige mexer no layout.
 
@@ -27,7 +28,9 @@ Boas-vindas para um cliente (logo em `public/clientes/`, props em `props/`; `log
 npx remotion render BoasVindas out/boas-vindas.mp4 --props=props/trend-cable.json
 ```
 
-Trilhas próprias, sintetizadas e livres de direitos: `python3 scripts/trilha.py public/audio/trilha-120bpm.wav` e `python3 scripts/trilha_boas_vindas.py public/audio/trilha-boas-vindas.wav`.
+Trilhas próprias, sintetizadas e livres de direitos: `python3 scripts/trilha.py public/audio/trilha-120bpm.wav` e `python3 scripts/trilha_boas_vindas.py public/audio/trilha-boas-vindas.wav` e `python3 scripts/trilha_rock.py public/audio/trilha-rock.wav`.
+
+O `BoasVindasRock` é pesado: renderize com `--concurrency=3 --timeout=180000`.
 
 As fontes ficam em `public/fontes` e os logos em `public/`, então o render não depende de internet.
 

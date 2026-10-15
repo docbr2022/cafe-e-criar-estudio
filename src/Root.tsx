@@ -1,5 +1,6 @@
 import { Composition, Still } from "remotion";
 import { BOAS_VINDAS_DURACAO, BOAS_VINDAS_FPS, BoasVindas, boasVindasPadrao } from "./BoasVindas";
+import { BoasVindasRock, boasVindasRockPadrao, ROCK_DURACAO, ROCK_FPS } from "./BoasVindasRock";
 import { FeedPost, feedPostPadrao } from "./FeedPost";
 import { DURACAO, FPS, Reels, reelsPadrao } from "./Reels";
 import { OFERTA_DURACAO, OFERTA_FPS, ReelsOferta, reelsOfertaPadrao } from "./ReelsOferta";
@@ -25,6 +26,15 @@ export const Root: React.FC = () => (
       fps={BOAS_VINDAS_FPS}
       durationInFrames={BOAS_VINDAS_DURACAO}
       defaultProps={boasVindasPadrao}
+    />
+    <Composition
+      id="BoasVindasRock"
+      component={BoasVindasRock}
+      width={1080}
+      height={1920}
+      fps={ROCK_FPS}
+      durationInFrames={ROCK_DURACAO}
+      defaultProps={boasVindasRockPadrao}
     />
   </>
 );
