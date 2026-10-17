@@ -23,7 +23,7 @@ export type ReelsErrosProps = {
   cta: string;
   salve: string;
   arroba: string;
-  trilha: string;
+  trilha: string | null; // null = sem som (a trilha sintetizada soou artificial)
 };
 
 export const reelsErrosPadrao: ReelsErrosProps = {
@@ -39,7 +39,7 @@ export const reelsErrosPadrao: ReelsErrosProps = {
   cta: "Chame no WhatsApp",
   salve: "Salve para revisar seu perfil",
   arroba: "@cafeecriar",
-  trilha: "audio/trilha-rock.wav",
+  trilha: null,
 };
 
 const decai = (f: number, t: number, tau = 5) => (f < t ? 0 : Math.exp(-(f - t) / tau));
@@ -325,7 +325,7 @@ export const ReelsErros: React.FC<ReelsErrosProps> = (props) => {
   const volume = (q: number) => interpolate(q, [0, 540, 600], [1, 1, 0], { extrapolateRight: "clamp" });
   return (
     <AbsoluteFill style={{ backgroundColor: cores.preto }}>
-      <Audio src={staticFile(props.trilha)} volume={volume} />
+      {props.trilha && <Audio src={staticFile(props.trilha)} volume={volume} />}
       <AbsoluteFill style={{ transform: `translate(${dx}px, ${dy}px) scale(${1.03 + tremor * 0.02})` }}>
         <Sequence durationInFrames={60}>
           <Gancho {...props} />
