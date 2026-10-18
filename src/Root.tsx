@@ -4,6 +4,7 @@ import { BoasVindasRock, boasVindasRockPadrao, ROCK_DURACAO, ROCK_FPS } from "./
 import { FeedPost, feedPostPadrao } from "./FeedPost";
 import { DURACAO, FPS, Reels, reelsPadrao } from "./Reels";
 import { Carrossel, carrosselPadrao } from "./Carrossel";
+import { MATRIZ_DURACAO, MATRIZ_FPS, ReelsMatriz, reelsMatrizPadrao } from "./ReelsMatriz";
 import { MARCA_DURACAO, MARCA_FPS, ReelsMarca, reelsMarcaPadrao } from "./ReelsMarca";
 import { ERROS_DURACAO, ERROS_FPS, ReelsErros, reelsErrosPadrao } from "./ReelsErros";
 import { OFERTA_DURACAO, OFERTA_FPS, OFERTA_PRECO_DURACAO, ReelsOferta, reelsOfertaPadrao } from "./ReelsOferta";
@@ -39,6 +40,15 @@ export const Root: React.FC = () => (
       fps={MARCA_FPS}
       durationInFrames={MARCA_DURACAO}
       defaultProps={reelsMarcaPadrao}
+    />
+    <Composition
+      id="ReelsMatriz"
+      component={ReelsMatriz}
+      width={1080}
+      height={1920}
+      fps={MATRIZ_FPS}
+      durationInFrames={MATRIZ_DURACAO}
+      defaultProps={reelsMatrizPadrao}
     />
     <Still id="Carrossel" component={Carrossel} width={1080} height={1350} defaultProps={carrosselPadrao} />
     <Composition
