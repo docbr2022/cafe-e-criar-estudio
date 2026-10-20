@@ -18,6 +18,8 @@ export type CarrosselProps = {
   itens: ItemCarrossel[];
   fechamento: { titulo: string; destaque: string; texto: string; cta: string; salve: string };
   arroba: string;
+  // Rótulo das lâminas internas ("SINAL 1 DE 5", "PERGUNTA 1 DE 5").
+  rotulo?: string;
 };
 
 export const carrosselPadrao: CarrosselProps = {
@@ -75,7 +77,7 @@ const Rodape: React.FC<{ atual: number; total: number; escuro: boolean; arroba: 
   </div>
 );
 
-const Capa: React.FC<CarrosselProps & { total: number }> = ({ kicker, titulo, destaque, apoio, arroba, total }) => (
+const Capa: React.FC<CarrosselProps & { total: number }> = ({ kicker, titulo, destaque, apoio, arroba, total, itens }) => (
   <AbsoluteFill style={{ backgroundColor: cores.preto }}>
     <div
       style={{
@@ -91,7 +93,7 @@ const Capa: React.FC<CarrosselProps & { total: number }> = ({ kicker, titulo, de
         transform: "rotate(-6deg)",
       }}
     >
-      5
+      {itens.length}
     </div>
     <div style={{ position: "absolute", left: 96, top: 90 }}>
       <Img src={staticFile("logo-mark.png")} style={{ width: 170 }} />
@@ -124,12 +126,12 @@ const Capa: React.FC<CarrosselProps & { total: number }> = ({ kicker, titulo, de
   </AbsoluteFill>
 );
 
-const Sinal: React.FC<{ n: number; item: ItemCarrossel; total: number; arroba: string }> = ({ n, item, total, arroba }) => {
+const Sinal: React.FC<{ n: number; item: ItemCarrossel; total: number; arroba: string; rotulo: string }> = ({ n, item, total, arroba, rotulo }) => {
   const escuro = n % 2 === 0;
   return (
     <AbsoluteFill style={{ backgroundColor: escuro ? cores.preto : cores.offWhite }}>
       <div style={{ position: "absolute", left: 96, top: 110, fontFamily: fontes.texto, fontWeight: 600, fontSize: 30, letterSpacing: "0.18em", color: escuro ? cores.amareloVivo : cores.ouro }}>
-        {`SINAL ${n} DE 5`}
+        {`${rotulo} ${n} DE ${total - 2}`}
       </div>
       <div
         style={{
@@ -207,5 +209,5 @@ export const Carrossel: React.FC<CarrosselProps> = (props) => {
   const total = props.itens.length + 2;
   if (props.slide <= 0) return <Capa {...props} total={total} />;
   if (props.slide >= total - 1) return <Fechamento {...props} total={total} />;
-  return <Sinal n={props.slide} item={props.itens[props.slide - 1]} total={total} arroba={props.arroba} />;
+  return <Sinal n={props.slide} item={props.itens[props.slide - 1]} total={total} arroba={props.arroba} rotulo={props.rotulo ?? "SINAL"} />;
 };
