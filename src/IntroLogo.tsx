@@ -4,7 +4,8 @@ import * as THREE from "three";
 import { SVGLoader } from "three/examples/jsm/loaders/SVGLoader.js";
 import { AbsoluteFill, Easing, interpolate, random, useCurrentFrame, useVideoConfig } from "remotion";
 import { pecasSimbolo, SIMBOLO_ALTURA, SIMBOLO_LARGURA } from "./introLogoSimbolo";
-import { cores, fontes } from "./marca";
+import { LETREIRO, letrasTitulo, SCRIPT } from "./introLogoLetreiro";
+import { cores } from "./marca";
 
 // Intro animada da logomarca, 7 s a 30 fps, peça reutilizável (abertura de Reels, vídeos e apresentações).
 // O símbolo é 3D de verdade: cada grão, o cérebro e a base da lâmpada são extrudados a partir do vetor do logo.
@@ -23,8 +24,6 @@ export type IntroLogoProps = {
 
 export const introLogoPadrao: IntroLogoProps = { comTexto: true, giroFinal: true };
 
-const TITULO = "Café e Criar";
-const SCRIPT = "Marketing Design";
 const PROFUNDIDADE = 16;
 const MOVE = [96, 126];
 
@@ -35,48 +34,43 @@ const faixa = (f: number, de: number, ate: number, easing = suave) =>
 const mix = (a: number, b: number, t: number) => a + (b - a) * t;
 
 // Posições na tela (px, origem no canto superior esquerdo) para cada formato.
+// O letreiro é desenhado na escala k sobre as coordenadas do logo-full.png.
+const LARGURA_LETREIRO = LETREIRO.x1 - LETREIRO.x0;
+const ALTURA_LETREIRO = LETREIRO.y1 - LETREIRO.y0;
 const usarLayout = (width: number, height: number) => {
   const deitado = width > height * 1.2;
   if (deitado) {
     const u = height / 1080;
-    const alturaFinal = 500 * u;
+    const alturaFinal = 470 * u;
     const larguraSimbolo = (alturaFinal * SIMBOLO_LARGURA) / SIMBOLO_ALTURA;
-    const titulo = 168 * u;
-    const larguraTitulo = titulo * 5.05;
-    const vao = 60 * u;
-    const inicioX = (width - (larguraSimbolo + vao + larguraTitulo)) / 2;
+    const k = 1.9 * u;
+    const vao = 70 * u;
+    const inicioX = (width - (larguraSimbolo + vao + LARGURA_LETREIRO * k)) / 2;
     return {
       deitado,
       centroInicio: { x: width / 2, y: height / 2 },
       alturaInicio: 720 * u,
       centroFinal: { x: inicioX + larguraSimbolo / 2, y: height / 2 },
       alturaFinal,
-      titulo,
-      script: 104 * u,
-      tituloX: inicioX + larguraSimbolo + vao,
-      tituloY: height / 2 - titulo * 0.78,
-      scriptY: height / 2 + titulo * 0.22,
-      larguraTitulo,
+      k,
+      blocoX: inicioX + larguraSimbolo + vao,
+      blocoY: height / 2 - (ALTURA_LETREIRO * k) / 2,
     };
   }
   const u = width / 1080;
   const alturaFinal = Math.min(560 * u, height * 0.42);
-  const titulo = 150 * u;
-  const script = 100 * u;
-  const bloco = alturaFinal + 40 * u + titulo + script;
-  const topo = (height - bloco) / 2;
+  const k = 1.3 * u;
+  const vao = 60 * u;
+  const topo = (height - (alturaFinal + vao + ALTURA_LETREIRO * k)) / 2;
   return {
     deitado,
     centroInicio: { x: width / 2, y: height / 2 },
     alturaInicio: Math.min(820 * u, height * 0.6),
     centroFinal: { x: width / 2, y: topo + alturaFinal / 2 },
     alturaFinal,
-    titulo,
-    script,
-    tituloX: 0,
-    tituloY: topo + alturaFinal + 30 * u,
-    scriptY: topo + alturaFinal + 40 * u + titulo * 0.95,
-    larguraTitulo: width,
+    k,
+    blocoX: (width - LARGURA_LETREIRO * k) / 2,
+    blocoY: topo + alturaFinal + vao,
   };
 };
 
@@ -275,71 +269,61 @@ const Particulas: React.FC<{ frame: number }> = ({ frame }) => {
   );
 };
 
+// Letreiro com as letras originais do logotipo: "Café e Criar" vira letra a letra, "Marketing Design" é escrito.
 const Titulo: React.FC<{ frame: number; l: ReturnType<typeof usarLayout> }> = ({ frame, l }) => {
-  const onda = (i: number) => (frame >= 166 && frame <= 200 ? -Math.sin(((frame - 166 - i * 1.5) / 18) * Math.PI) : 0);
+  const { k } = l;
+  const altLetra = (LETREIRO.linhaTitulo - LETREIRO.y0) * k;
+  const onda = (i: number) => (frame >= 166 && frame <= 200 ? Math.max(0, -Math.sin(((frame - 166 - i * 1.5) / 18) * Math.PI)) : 0);
   const escreve = faixa(frame, 132, 166, meio);
-  const alinhamento = l.deitado ? "flex-start" : "center";
+  const scriptY0 = LETREIRO.linhaTitulo + 2;
   return (
     <>
-      <div
-        style={{
-          position: "absolute",
-          left: l.deitado ? l.tituloX : 0,
-          width: l.deitado ? undefined : "100%",
-          top: l.tituloY,
-          display: "flex",
-          justifyContent: alinhamento,
-          fontFamily: fontes.titulo,
-          fontWeight: 800,
-          fontSize: l.titulo,
-          lineHeight: 1,
-          color: cores.amareloVivo,
-          perspective: l.titulo * 6,
-          whiteSpace: "pre",
-        }}
-      >
-        {TITULO.split("").map((c, i) => {
-          const t = faixa(frame, 104 + i * 2.2, 104 + i * 2.2 + 20);
-          const sobe = onda(i);
-          return (
-            <span
-              key={i}
+      {letrasTitulo.map((letra, i) => {
+        const t = faixa(frame, 104 + i * 2.4, 104 + i * 2.4 + 20);
+        const w = (letra.x1 - letra.x0) * k;
+        return (
+          <div
+            key={i}
+            style={{
+              position: "absolute",
+              left: l.blocoX + (letra.x0 - LETREIRO.x0) * k,
+              top: l.blocoY,
+              width: w,
+              height: altLetra,
+              perspective: altLetra * 8,
+              opacity: interpolate(t, [0, 0.15], [0, 1], { extrapolateRight: "clamp" }),
+            }}
+          >
+            <svg
+              width={w}
+              height={altLetra}
+              viewBox={`${letra.x0} ${LETREIRO.y0} ${letra.x1 - letra.x0} ${LETREIRO.linhaTitulo - LETREIRO.y0}`}
               style={{
-                display: "inline-block",
+                overflow: "visible",
                 transformOrigin: "50% 100%",
-                transform: `translateY(${(1 - t) * l.titulo * 0.6 + Math.max(0, sobe) * -l.titulo * 0.12}px) rotateX(${(1 - t) * -95}deg) scale(${mix(1.5, 1, t)})`,
-                opacity: interpolate(t, [0, 0.15], [0, 1], { extrapolateRight: "clamp" }),
+                transform: `translateY(${(1 - t) * altLetra * 0.6 - onda(i) * altLetra * 0.12}px) rotateX(${(1 - t) * -95}deg) scale(${mix(1.5, 1, t)})`,
               }}
             >
-              {c}
-            </span>
-          );
-        })}
-      </div>
-      <div
+              <path d={letra.d} fill={cores.amareloVivo} fillRule="evenodd" />
+            </svg>
+          </div>
+        );
+      })}
+      <svg
+        width={(SCRIPT.x1 - SCRIPT.x0) * k}
+        height={(LETREIRO.y1 - scriptY0) * k}
+        viewBox={`${SCRIPT.x0} ${scriptY0} ${SCRIPT.x1 - SCRIPT.x0} ${LETREIRO.y1 - scriptY0}`}
         style={{
           position: "absolute",
-          left: l.deitado ? l.tituloX + l.larguraTitulo * 0.2 : 0,
-          width: l.deitado ? undefined : "100%",
-          top: l.scriptY,
-          textAlign: "center",
-          fontFamily: fontes.script,
-          fontSize: l.script,
-          lineHeight: 1.2,
-          color: cores.amareloVivo,
+          overflow: "visible",
+          left: l.blocoX + (SCRIPT.x0 - LETREIRO.x0) * k,
+          top: l.blocoY + (scriptY0 - LETREIRO.y0) * k,
+          clipPath: `inset(-20% ${(1 - escreve) * 100}% -20% 0)`,
+          transform: `translateX(${(1 - escreve) * 40 * k}px)`,
         }}
       >
-        <span
-          style={{
-            display: "inline-block",
-            padding: `0 ${l.script * 0.15}px`,
-            clipPath: `inset(-20% ${(1 - escreve) * 100}% -20% 0)`,
-            transform: `translateX(${(1 - escreve) * l.script * 0.4}px)`,
-          }}
-        >
-          {SCRIPT}
-        </span>
-      </div>
+        <path d={SCRIPT.d} fill={cores.amareloVivo} fillRule="evenodd" />
+      </svg>
     </>
   );
 };
