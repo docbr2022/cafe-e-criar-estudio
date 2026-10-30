@@ -24,6 +24,7 @@ export type ReelsErrosProps = {
   salve: string;
   arroba: string;
   trilha: string | null; // null = sem som (a trilha sintetizada soou artificial)
+  letreiro?: string; // faixas da cena da pergunta; padrão = os três acertos do Reels de 19/10
 };
 
 export const reelsErrosPadrao: ReelsErrosProps = {
@@ -241,13 +242,13 @@ const CenaErro: React.FC<{ n: number; erro: Erro; fundoClaro: boolean }> = ({ n,
 };
 
 // 5. Paradas da trilha (420–480): a pergunta bate em três golpes.
-const Pergunta: React.FC<ReelsErrosProps> = ({ pergunta }) => {
+const Pergunta: React.FC<ReelsErrosProps> = ({ pergunta, letreiro = "CALENDÁRIO  •  LEGENDA CURTA  •  UM CAMINHO SÓ  •  " }) => {
   const f = useCurrentFrame();
   const golpe = (t: number) => prog(f, t, 6);
   return (
     <AbsoluteFill style={{ backgroundColor: cores.amareloVivo, alignItems: "center", justifyContent: "center" }}>
-      <Letreiro texto="CALENDÁRIO  •  LEGENDA CURTA  •  UM CAMINHO SÓ  •  " top={260} rot={-7} sentido={1} fundo={cores.preto} cor={cores.amareloVivo} />
-      <Letreiro texto="CALENDÁRIO  •  LEGENDA CURTA  •  UM CAMINHO SÓ  •  " top={1500} rot={6} sentido={-1} fundo={cores.preto} cor={cores.branco} />
+      <Letreiro texto={letreiro} top={260} rot={-7} sentido={1} fundo={cores.preto} cor={cores.amareloVivo} />
+      <Letreiro texto={letreiro} top={1500} rot={6} sentido={-1} fundo={cores.preto} cor={cores.branco} />
       <div style={{ fontFamily: fontes.titulo, fontWeight: 800, fontSize: 170, lineHeight: 0.95, color: cores.preto, textAlign: "center" }}>
         <div style={{ transform: `scale(${2 - golpe(0)})`, opacity: golpe(0) }}>{pergunta[0]}</div>
         <div style={{ transform: `scale(${2 - golpe(15)})`, opacity: golpe(15) }}>{pergunta[1]}</div>

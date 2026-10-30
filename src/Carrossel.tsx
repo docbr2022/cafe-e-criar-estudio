@@ -20,6 +20,8 @@ export type CarrosselProps = {
   arroba: string;
   // Rótulo das lâminas internas ("SINAL 1 DE 5", "PERGUNTA 1 DE 5").
   rotulo?: string;
+  // Texto gigante da capa; padrão = número de itens.
+  numeroCapa?: string;
 };
 
 export const carrosselPadrao: CarrosselProps = {
@@ -77,23 +79,23 @@ const Rodape: React.FC<{ atual: number; total: number; escuro: boolean; arroba: 
   </div>
 );
 
-const Capa: React.FC<CarrosselProps & { total: number }> = ({ kicker, titulo, destaque, apoio, arroba, total, itens }) => (
+const Capa: React.FC<CarrosselProps & { total: number }> = ({ kicker, titulo, destaque, apoio, arroba, total, itens, numeroCapa }) => (
   <AbsoluteFill style={{ backgroundColor: cores.preto }}>
     <div
       style={{
         position: "absolute",
-        right: -140,
+        right: (numeroCapa ?? String(itens.length)).length > 1 ? -20 : -140,
         top: -60,
         fontFamily: fontes.titulo,
         fontWeight: 800,
-        fontSize: 860,
+        fontSize: (numeroCapa ?? String(itens.length)).length > 1 ? 600 : 860,
         lineHeight: 1,
         color: cores.amareloVivo,
         opacity: 0.95,
         transform: "rotate(-6deg)",
       }}
     >
-      {itens.length}
+      {numeroCapa ?? itens.length}
     </div>
     <div style={{ position: "absolute", left: 96, top: 90 }}>
       <Img src={staticFile("logo-mark.png")} style={{ width: 170 }} />
