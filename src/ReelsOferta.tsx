@@ -37,6 +37,8 @@ export type ReelsOfertaProps = {
   // Versão "preço primeiro": abre no valor já cheio (quadro 0), sem o gancho em texto.
   abrirComPreco?: boolean;
   precoTitulo?: [string, string];
+  // Versão "abertura": troca gancho e xícara por uma cena de 2,5 s (palavra riscada + frase), depois preço.
+  abertura?: { riscado: string; frase: [string, string] };
 };
 
 export const reelsOfertaPadrao: ReelsOfertaProps = {
@@ -470,8 +472,82 @@ const ReelsOfertaPreco: React.FC<ReelsOfertaProps> = (props) => (
   </AbsoluteFill>
 );
 
+
+// Abertura (0–75): palavra grande e frase já na tela no quadro 0; a palavra leva um risco preto no tempo.
+const Abertura: React.FC<ReelsOfertaProps> = ({ abertura }) => {
+  const f = useCurrentFrame();
+  if (!abertura) return null;
+  const bate = f >= 16 ? Math.exp(-(f - 16) / 5) : 0;
+  const titulo: React.CSSProperties = { fontFamily: fontes.titulo, fontWeight: 800, fontSize: 132, lineHeight: 1, color: cores.branco };
+  return (
+    <AbsoluteFill style={{ backgroundColor: cores.preto }}>
+      <AbsoluteFill style={{ backgroundColor: cores.amareloVivo, clipPath: "polygon(0 0, 100% 0, 100% 46%, 0 56%)" }} />
+      <div
+        style={{
+          position: "absolute",
+          left: 60,
+          right: 60,
+          top: 300,
+          transform: `rotate(-4deg) scale(${1 + bate * 0.06})`,
+          fontFamily: fontes.titulo,
+          fontWeight: 800,
+          fontSize: 190,
+          lineHeight: 0.92,
+          color: cores.preto,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+        }}
+      >
+        {abertura.riscado.split(" ").map((p, i) => (
+          <div key={p} style={{ position: "relative", alignSelf: "flex-start", display: "inline-block" }}>
+            {p}
+            <div
+              style={{
+                position: "absolute",
+                left: -20,
+                top: "50%",
+                height: 26,
+                width: `${prog(f, 8 + i * 5, 7) * 112}%`,
+                backgroundColor: cores.preto,
+                transform: "rotate(-3deg)",
+              }}
+            />
+          </div>
+        ))}
+      </div>
+      <AbsoluteFill style={{ justifyContent: "flex-end", padding: "0 80px 330px" }}>
+        <div style={titulo}>{abertura.frase[0]}</div>
+        <div style={{ ...titulo, color: cores.amareloVivo, transform: `scale(${1 + bate * 0.05})`, transformOrigin: "left center" }}>{abertura.frase[1]}</div>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+// Abertura, 13,5 s: abertura (0–75) → preço (75–135) → entregas (135–255) → prazo (255–315) → chamada (315–405).
+export const OFERTA_ABERTURA_DURACAO = 405;
+const ReelsOfertaAbertura: React.FC<ReelsOfertaProps> = (props) => (
+  <AbsoluteFill style={{ backgroundColor: cores.preto }}>
+    <Sequence durationInFrames={75}>
+      <Abertura {...props} />
+    </Sequence>
+    <Sequence from={75} durationInFrames={60}>
+      <Preco {...props} />
+    </Sequence>
+    <Sequence from={135} durationInFrames={120}>
+      <Entregas {...props} />
+    </Sequence>
+    <Sequence from={255} durationInFrames={60}>
+      <Urgencia {...props} />
+    </Sequence>
+    <Sequence from={315}>
+      <Chamada {...props} />
+    </Sequence>
+  </AbsoluteFill>
+);
+
 export const ReelsOferta: React.FC<ReelsOfertaProps> = (props) =>
-  props.abrirComPreco ? <ReelsOfertaPreco {...props} /> : (
+  props.abertura ? <ReelsOfertaAbertura {...props} /> : props.abrirComPreco ? <ReelsOfertaPreco {...props} /> : (
   <AbsoluteFill style={{ backgroundColor: cores.preto }}>
     {props.trilha && <Audio src={staticFile(props.trilha)} />}
     <Sequence durationInFrames={60}>

@@ -4,9 +4,12 @@ import { BoasVindasRock, boasVindasRockPadrao, ROCK_DURACAO, ROCK_FPS } from "./
 import { FeedPost, feedPostPadrao } from "./FeedPost";
 import { DURACAO, FPS, Reels, reelsPadrao } from "./Reels";
 import { Carrossel, carrosselPadrao } from "./Carrossel";
+import { ESTILOS_DURACAO, ESTILOS_FPS, ReelsEstilos, reelsEstilosPadrao } from "./ReelsEstilos";
+import { MATRIZ_DURACAO, MATRIZ_FPS, ReelsMatriz, reelsMatrizPadrao } from "./ReelsMatriz";
 import { MARCA_DURACAO, MARCA_FPS, ReelsMarca, reelsMarcaPadrao } from "./ReelsMarca";
 import { ERROS_DURACAO, ERROS_FPS, ReelsErros, reelsErrosPadrao } from "./ReelsErros";
-import { OFERTA_DURACAO, OFERTA_FPS, OFERTA_PRECO_DURACAO, ReelsOferta, reelsOfertaPadrao } from "./ReelsOferta";
+import { PERGUNTAS_DURACAO, PERGUNTAS_FPS, ReelsPerguntas, reelsPerguntasPadrao } from "./ReelsPerguntas";
+import { OFERTA_ABERTURA_DURACAO, OFERTA_DURACAO, OFERTA_FPS, OFERTA_PRECO_DURACAO, ReelsOferta, reelsOfertaPadrao } from "./ReelsOferta";
 
 export const Root: React.FC = () => (
   <>
@@ -20,7 +23,7 @@ export const Root: React.FC = () => (
       fps={OFERTA_FPS}
       durationInFrames={OFERTA_DURACAO}
       defaultProps={reelsOfertaPadrao}
-      calculateMetadata={({ props }) => ({ durationInFrames: props.abrirComPreco ? OFERTA_PRECO_DURACAO : OFERTA_DURACAO })}
+      calculateMetadata={({ props }) => ({ durationInFrames: props.abertura ? OFERTA_ABERTURA_DURACAO : props.abrirComPreco ? OFERTA_PRECO_DURACAO : OFERTA_DURACAO })}
     />
     <Composition
       id="ReelsErros"
@@ -39,6 +42,34 @@ export const Root: React.FC = () => (
       fps={MARCA_FPS}
       durationInFrames={MARCA_DURACAO}
       defaultProps={reelsMarcaPadrao}
+    />
+    <Composition
+      id="ReelsMatriz"
+      component={ReelsMatriz}
+      width={1080}
+      height={1920}
+      fps={MATRIZ_FPS}
+      durationInFrames={MATRIZ_DURACAO}
+      defaultProps={reelsMatrizPadrao}
+    />
+    <Composition
+      id="ReelsEstilos"
+      component={ReelsEstilos}
+      width={1080}
+      height={1920}
+      fps={ESTILOS_FPS}
+      durationInFrames={ESTILOS_DURACAO}
+      defaultProps={reelsEstilosPadrao}
+    />
+    <Composition
+      id="ReelsPerguntas"
+      component={ReelsPerguntas}
+      width={1080}
+      height={1920}
+      fps={PERGUNTAS_FPS}
+      durationInFrames={PERGUNTAS_DURACAO}
+      defaultProps={reelsPerguntasPadrao}
+      calculateMetadata={({ props }) => ({ durationInFrames: 60 + props.perguntas.length * 120 + 120 })}
     />
     <Still id="Carrossel" component={Carrossel} width={1080} height={1350} defaultProps={carrosselPadrao} />
     <Composition
