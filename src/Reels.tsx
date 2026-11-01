@@ -7,7 +7,9 @@ export type ReelsProps = {
   titulo: string;
   destaque: string;
   itens: string[];
+  kickerItens?: string;
   cta: string;
+  aviso?: string; // linha de urgência opcional acima do CTA
   convite: string;
   arroba: string;
 };
@@ -52,10 +54,10 @@ const Cena1: React.FC<ReelsProps> = ({ kicker, titulo, destaque }) => (
   </AbsoluteFill>
 );
 
-const Cena2: React.FC<ReelsProps> = ({ itens }) => (
+const Cena2: React.FC<ReelsProps> = ({ itens, kickerItens = "O QUE OFERECEMOS" }) => (
   <AbsoluteFill style={{ backgroundColor: cores.offWhite, padding: "0 80px", justifyContent: "center", gap: 40 }}>
     <Entra em={0} style={{ fontFamily: fontes.texto, fontWeight: 600, fontSize: 40, letterSpacing: "0.18em", color: cores.ouro }}>
-      O QUE OFERECEMOS
+      {kickerItens}
     </Entra>
     {itens.map((item, i) => (
       <Entra
@@ -83,7 +85,7 @@ const Cena2: React.FC<ReelsProps> = ({ itens }) => (
   </AbsoluteFill>
 );
 
-const Cena3: React.FC<ReelsProps> = ({ cta, convite, arroba }) => (
+const Cena3: React.FC<ReelsProps> = ({ cta, convite, aviso, arroba }) => (
   <AbsoluteFill style={{ backgroundColor: cores.preto, alignItems: "center", justifyContent: "center", gap: 64, padding: "0 80px" }}>
     <Entra em={0}>
       <Img src={staticFile("logo-full.png")} style={{ width: 860 }} />
@@ -91,6 +93,11 @@ const Cena3: React.FC<ReelsProps> = ({ cta, convite, arroba }) => (
     <Entra em={8} style={{ fontFamily: fontes.texto, fontSize: 52, lineHeight: 1.4, color: cores.branco, textAlign: "center" }}>
       {convite}
     </Entra>
+    {aviso && (
+      <Entra em={11} style={{ fontFamily: fontes.texto, fontWeight: 600, fontSize: 40, letterSpacing: "0.12em", color: cores.amareloVivo, textAlign: "center" }}>
+        {aviso}
+      </Entra>
+    )}
     <Entra
       em={14}
       style={{
