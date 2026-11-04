@@ -1,0 +1,80 @@
+{
+  "sistema": "Barber SP",
+  "icone": "tesoura",
+  "nicho": "PARA BARBEARIAS",
+  "gancho": ["Sua agenda ainda", "mora no caderno", "e no WhatsApp?"],
+  "slogan": "Agenda, caixa e divulgação num lugar só.",
+  "legendaApresenta": "Gestão completa para a sua barbearia crescer organizada.",
+  "telas": [
+    {
+      "tipo": "agenda",
+      "titulo": "Agenda por barbeiro",
+      "selo": "Fim do caderno",
+      "legenda": "Cada barbeiro com a sua agenda. O cliente reserva e o horário já fica marcado.",
+      "cabecalho": "Agenda de sábado",
+      "colunas": ["Rafa", "Léo", "Davi"],
+      "horarios": ["09:00", "10:00", "11:00", "13:00", "14:00", "15:00"],
+      "reservas": [
+        {"coluna": 0, "linha": 0, "cliente": "Corte"},
+        {"coluna": 1, "linha": 0, "cliente": "Barba"},
+        {"coluna": 2, "linha": 1, "cliente": "Corte + barba"},
+        {"coluna": 0, "linha": 2, "cliente": "Degradê"},
+        {"coluna": 1, "linha": 2, "cliente": "Corte"},
+        {"coluna": 2, "linha": 3, "cliente": "Pigmentação"},
+        {"coluna": 0, "linha": 4, "cliente": "Corte"},
+        {"coluna": 1, "linha": 5, "cliente": "Barba"}
+      ]
+    },
+    {
+      "tipo": "lista",
+      "titulo": "Página da barbearia",
+      "selo": "Reserva em 3 toques",
+      "legenda": "Sua barbearia ganha uma página com serviços, preços e botão de reservar.",
+      "cabecalho": "Serviços",
+      "itens": [
+        {"nome": "Corte", "detalhe": "40 min", "preco": "R$ 45", "icone": "tesoura"},
+        {"nome": "Barba", "detalhe": "30 min", "preco": "R$ 35", "icone": "servico"},
+        {"nome": "Corte + barba", "detalhe": "1 h", "preco": "R$ 70", "icone": "estrela"},
+        {"nome": "Sobrancelha", "detalhe": "15 min", "preco": "R$ 20", "icone": "usuario"},
+        {"nome": "Pigmentação", "detalhe": "45 min", "preco": "R$ 50", "icone": "pena"},
+        {"nome": "Onde estamos", "detalhe": "Ver no mapa", "preco": "Mapa", "icone": "local"}
+      ],
+      "toques": [2, 3],
+      "rodape": "Reservar sábado 14:00"
+    },
+    {
+      "tipo": "painel",
+      "titulo": "Fluxo de caixa na mão",
+      "selo": "Quanto entrou, por barbeiro",
+      "legenda": "Você vê o caixa do dia e o que cada barbeiro produziu, sem planilha.",
+      "cabecalho": "Caixa",
+      "kpis": [
+        {"rotulo": "Caixa do dia", "valor": 1840, "prefixo": "R$ "},
+        {"rotulo": "Atendimentos", "valor": 32}
+      ],
+      "barras": [0.4, 0.46, 0.52, 0.5, 0.7, 1, 0.3],
+      "rotulos": ["S", "T", "Q", "Q", "S", "S", "D"],
+      "feed": [
+        {"texto": "Rafa  Corte + barba", "valor": "R$ 70", "icone": "tesoura"},
+        {"texto": "Léo  Corte", "valor": "R$ 45", "icone": "tesoura"},
+        {"texto": "Davi  Pigmentação", "valor": "R$ 50", "icone": "carteira"}
+      ]
+    }
+  ],
+  "aviso": "Telas ilustrativas",
+  "combo": {
+    "marketing": ["Posts e Reels", "Anúncios no bairro", "Perfil sempre ativo"],
+    "resultado": ["Agenda organizada", "e cadeira cheia"],
+    "legenda": "Com a nossa gestão de marketing, a barbearia aparece e a agenda enche."
+  },
+  "url": "barbersp.com.br",
+  "cadastro": {
+    "pergunta": ["Quer só", "o sistema?"],
+    "botao": "Cadastre-se",
+    "legenda": "Acesse o site, faça o seu cadastro e conheça por dentro."
+  },
+  "convite": "Sistema + marketing: a gente monta com você, com um café.",
+  "cta": "Chame no WhatsApp",
+  "arroba": "@cafeecriar",
+  "trilha": null
+}

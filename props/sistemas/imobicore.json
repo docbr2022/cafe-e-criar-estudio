@@ -1,0 +1,76 @@
+{
+  "sistema": "ImobiCore",
+  "icone": "predio",
+  "nicho": "PARA IMOBILIÁRIAS",
+  "gancho": ["Seus imóveis", "ainda espalhados", "em vários portais?"],
+  "slogan": "Seu site, sua vitrine, seus contatos.",
+  "legendaApresenta": "Um sistema imobiliário completo, com a sua marca e o seu domínio.",
+  "telas": [
+    {
+      "tipo": "busca",
+      "titulo": "Busca que acha o imóvel",
+      "selo": "Cidade, tipo e preço",
+      "legenda": "O cliente busca por cidade, bairro, tipo e faixa de preço, no celular ou no computador.",
+      "cabecalho": "Encontre seu imóvel",
+      "pesquisa": "Apartamento no Tatuapé",
+      "filtros": ["Venda", "2 quartos", "Até R$ 600 mil", "Com vaga"],
+      "total": 128,
+      "resultados": [
+        {"nome": "Apartamento 2 quartos", "detalhe": "Tatuapé  64 m²  1 vaga", "preco": "R$ 545.000", "icone": "predio"},
+        {"nome": "Apartamento com varanda", "detalhe": "Tatuapé  70 m²  1 vaga", "preco": "R$ 589.000", "icone": "cama"},
+        {"nome": "Casa térrea", "detalhe": "Vila Formosa  90 m²", "preco": "R$ 598.000", "icone": "casa"}
+      ]
+    },
+    {
+      "tipo": "lista",
+      "titulo": "Vitrine de imóveis",
+      "selo": "Uma página por imóvel",
+      "legenda": "Cada imóvel ganha a própria página, pronta para ser encontrada no Google.",
+      "cabecalho": "Destaques",
+      "itens": [
+        {"nome": "Apto Tatuapé", "detalhe": "2 quartos, 64 m²", "preco": "R$ 545 mil", "icone": "predio"},
+        {"nome": "Casa Penha", "detalhe": "3 quartos, 120 m²", "preco": "R$ 720 mil", "icone": "casa"},
+        {"nome": "Studio Mooca", "detalhe": "Aluguel, 32 m²", "preco": "R$ 2.300", "icone": "cama"},
+        {"nome": "Sobrado Carrão", "detalhe": "2 vagas, 140 m²", "preco": "R$ 890 mil", "icone": "carro"},
+        {"nome": "Sala comercial", "detalhe": "Anália Franco", "preco": "R$ 3.800", "icone": "loja"},
+        {"nome": "Terreno", "detalhe": "250 m²", "preco": "R$ 410 mil", "icone": "metragem"}
+      ],
+      "toques": [0],
+      "rodape": "Falar no WhatsApp"
+    },
+    {
+      "tipo": "painel",
+      "titulo": "Contatos no painel",
+      "selo": "Nenhum contato perdido",
+      "legenda": "Cada contato do site fica registrado no painel, com o imóvel que interessou.",
+      "cabecalho": "Contatos",
+      "kpis": [
+        {"rotulo": "Contatos no mês", "valor": 86},
+        {"rotulo": "Imóveis ativos", "valor": 128}
+      ],
+      "barras": [0.3, 0.42, 0.4, 0.58, 0.64, 0.8, 1],
+      "rotulos": ["Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov"],
+      "feed": [
+        {"texto": "Apto Tatuapé  via WhatsApp", "valor": "Novo", "icone": "whatsapp"},
+        {"texto": "Casa Penha  formulário", "valor": "Visita", "icone": "casa"},
+        {"texto": "Studio Mooca  via Google", "valor": "Novo", "icone": "busca"}
+      ]
+    }
+  ],
+  "aviso": "Telas ilustrativas",
+  "combo": {
+    "marketing": ["Posts e Reels", "Anúncios por região", "Imóvel em destaque"],
+    "resultado": ["Mais contatos", "para o seu corretor"],
+    "legenda": "Com a nossa gestão de marketing, seus imóveis chegam em quem quer comprar."
+  },
+  "url": "imobicore.com.br",
+  "cadastro": {
+    "pergunta": ["Quer só", "o sistema?"],
+    "botao": "Cadastre-se",
+    "legenda": "Acesse o site, faça o seu cadastro e conheça por dentro."
+  },
+  "convite": "Sistema + marketing: a gente monta com você, com um café.",
+  "cta": "Chame no WhatsApp",
+  "arroba": "@cafeecriar",
+  "trilha": null
+}
