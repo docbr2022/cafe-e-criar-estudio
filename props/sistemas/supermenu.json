@@ -1,0 +1,61 @@
+{
+  "sistema": "SuperMenu SP",
+  "icone": "burger",
+  "nicho": "PARA RESTAURANTES E DELIVERY",
+  "gancho": [
+    "Ainda paga",
+    "taxa de app para",
+    "vender o seu lanche?"
+  ],
+  "slogan": "Seu cardápio, sua marca, seus clientes.",
+  "legendaApresenta": "Seu canal próprio de pedidos, sem taxa por venda.",
+  "telas": [
+    {
+      "tipo": "imagem",
+      "arquivo": "sistemas/supermenu-categorias.jpg",
+      "titulo": "Cardápio do seu jeito",
+      "selo": "Categorias e produtos",
+      "legenda": "Você organiza categorias, produtos e combos. A ordem que aparece no cardápio é você que define."
+    },
+    {
+      "tipo": "imagem",
+      "arquivo": "sistemas/supermenu-pedidos.jpg",
+      "titulo": "Pedidos num lugar só",
+      "selo": "Balcão, mesa e entrega",
+      "legenda": "Cada pedido do cardápio chega no painel, com itens e valor, sem taxa por venda."
+    },
+    {
+      "tipo": "imagem",
+      "arquivo": "sistemas/supermenu-pdv.jpg",
+      "titulo": "PDV do salão",
+      "selo": "Garçom lança pelo celular",
+      "legenda": "O garçom abre o link no celular e lança os pedidos das mesas, com taxa de serviço se quiser."
+    }
+  ],
+  "aviso": null,
+  "combo": {
+    "marketing": [
+      "Posts e Reels",
+      "Anúncios locais",
+      "Calendário fixo"
+    ],
+    "resultado": [
+      "Mais gente pedindo",
+      "direto com você"
+    ],
+    "legenda": "Com a nossa gestão de marketing, o sistema ganha clientes todos os dias."
+  },
+  "url": "supermenusp.com.br",
+  "cadastro": {
+    "pergunta": [
+      "Quer só",
+      "o sistema?"
+    ],
+    "botao": "Cadastre-se",
+    "legenda": "Acesse o site, faça o seu cadastro e conheça por dentro."
+  },
+  "convite": "Sistema + marketing: a gente monta com você, com um café.",
+  "cta": "Chame no WhatsApp",
+  "arroba": "@cafeecriar",
+  "trilha": null
+}

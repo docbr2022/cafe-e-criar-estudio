@@ -34,7 +34,7 @@ import {
   faUtensils,
   faWallet,
 } from "@fortawesome/free-solid-svg-icons";
-import { AbsoluteFill, Audio, Img, interpolate, random, Sequence, staticFile, useCurrentFrame } from "remotion";
+import { AbsoluteFill, Audio, Easing, Img, interpolate, random, Sequence, staticFile, useCurrentFrame } from "remotion";
 import { cores, fontes } from "./marca";
 import { Graos, Icone, Pop, prog, Revela } from "./ReelsOferta";
 
@@ -522,7 +522,7 @@ const TelaPainel: React.FC<{ tela: Extract<Tela, { tipo: "painel" }>; sistema: s
 const TelaImagem: React.FC<{ tela: Extract<Tela, { tipo: "imagem" }> }> = ({ tela }) => {
   const f = useCurrentFrame();
   // print rola de cima para baixo dentro do celular
-  const y = interpolate(f, [10, 110], [0, -1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const y = interpolate(f, [14, 112], [0, -1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: Easing.inOut(Easing.cubic) });
   return (
     <AbsoluteFill style={{ backgroundColor: cores.branco, overflow: "hidden" }}>
       <Img src={staticFile(tela.arquivo)} style={{ width: "100%", position: "absolute", top: 0, transform: `translateY(calc(${y} * (100% - ${ALT}px)))` }} />
