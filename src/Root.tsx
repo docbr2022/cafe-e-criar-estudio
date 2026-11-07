@@ -1,4 +1,6 @@
 import { Composition, Still } from "remotion";
+import { CONVERSA_FPS, conversaDuracao, ReelsConversa, reelsConversaPadrao } from "./ReelsConversa";
+import { CUPOM_DURACAO, CUPOM_FPS, ReelsCupom, reelsCupomPadrao } from "./ReelsCupom";
 import { BOAS_VINDAS_DURACAO, BOAS_VINDAS_FPS, BoasVindas, boasVindasPadrao } from "./BoasVindas";
 import { BoasVindasRock, boasVindasRockPadrao, ROCK_DURACAO, ROCK_FPS } from "./BoasVindasRock";
 import { FeedPost, feedPostPadrao } from "./FeedPost";
@@ -81,6 +83,8 @@ export const Root: React.FC = () => (
       durationInFrames={SISTEMA_DURACAO}
       defaultProps={reelsSistemaPadrao}
     />
+    <Composition id="ReelsCupom" component={ReelsCupom} width={1080} height={1920} fps={CUPOM_FPS} durationInFrames={CUPOM_DURACAO} defaultProps={reelsCupomPadrao} />
+    <Composition id="ReelsConversa" component={ReelsConversa} width={1080} height={1920} fps={CONVERSA_FPS} durationInFrames={conversaDuracao(4)} defaultProps={reelsConversaPadrao} calculateMetadata={({ props }) => ({ durationInFrames: conversaDuracao(props.perguntas.length) })} />
     <Still id="Carrossel" component={Carrossel} width={1080} height={1350} defaultProps={carrosselPadrao} />
     <Composition
       id="BoasVindas"
