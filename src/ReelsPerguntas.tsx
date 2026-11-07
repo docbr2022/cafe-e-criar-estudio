@@ -21,6 +21,8 @@ export type ReelsPerguntasProps = {
   salve: string;
   arroba: string;
   trilha: string | null;
+  // "conversa": capa clara com as perguntas em balões de chat, no lugar do "?" gigante.
+  ganchoEstilo?: "interrogacao" | "conversa";
 };
 
 export const reelsPerguntasPadrao: ReelsPerguntasProps = {
@@ -91,6 +93,81 @@ const Gancho: React.FC<ReelsPerguntasProps> = ({ gancho, kicker }) => {
           {gancho[2]}
         </div>
       </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
+// 1b. Gancho "conversa" (0–60): título no alto e as perguntas já na tela como mensagens de chat.
+const GanchoConversa: React.FC<ReelsPerguntasProps> = ({ gancho, kicker, perguntas }) => {
+  const f = useCurrentFrame();
+  const titulo: React.CSSProperties = { fontFamily: fontes.titulo, fontWeight: 800, fontSize: 104, lineHeight: 1, color: cores.tinta };
+  return (
+    <AbsoluteFill style={{ backgroundColor: cores.offWhite }}>
+      <div style={{ position: "absolute", left: 80, right: 80, top: 280, display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 4 }}>
+        <div
+          style={{
+            backgroundColor: cores.preto,
+            color: cores.amareloVivo,
+            fontFamily: fontes.texto,
+            fontWeight: 600,
+            fontSize: 34,
+            letterSpacing: "0.16em",
+            padding: "10px 26px",
+            borderRadius: 999,
+            marginBottom: 24,
+          }}
+        >
+          {kicker}
+        </div>
+        <div style={titulo}>{`${gancho[0]} ${gancho[1]}`}</div>
+        <div style={{ ...titulo, backgroundColor: cores.amarelo, padding: "0 20px 8px", borderRadius: 14, marginLeft: -8, marginTop: 6 }}>{gancho[2]}</div>
+      </div>
+      <div style={{ position: "absolute", left: 70, right: 70, top: 790, display: "flex", flexDirection: "column", gap: 26 }}>
+        {perguntas.map((p, i) => (
+          <div
+            key={i}
+            style={{
+              alignSelf: i % 2 ? "flex-end" : "flex-start",
+              maxWidth: 800,
+              backgroundColor: cores.branco,
+              borderRadius: 40,
+              [i % 2 ? "borderBottomRightRadius" : "borderBottomLeftRadius"]: 8,
+              padding: "28px 40px 30px",
+              boxShadow: "0 10px 30px rgba(0,0,0,.08)",
+              transform: `translateY(${Math.sin(f / 10 + i * 1.3) * 4}px)`,
+              display: "flex",
+              gap: 22,
+              alignItems: "flex-start",
+            }}
+          >
+            <div
+              style={{
+                flex: "0 0 auto",
+                width: 62,
+                height: 62,
+                borderRadius: 99,
+                backgroundColor: cores.preto,
+                color: cores.amareloVivo,
+                fontFamily: fontes.titulo,
+                fontWeight: 800,
+                fontSize: 38,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 2,
+              }}
+            >
+              {i + 1}
+            </div>
+            <div style={{ fontFamily: fontes.texto, fontWeight: 500, fontSize: 44, lineHeight: 1.3, color: cores.tinta }}>{p.pergunta}</div>
+          </div>
+        ))}
+        <div style={{ alignSelf: "flex-start", backgroundColor: cores.preto, borderRadius: 40, borderBottomLeftRadius: 8, padding: "30px 40px", display: "flex", gap: 14 }}>
+          {[0, 1, 2].map((d) => (
+            <div key={d} style={{ width: 22, height: 22, borderRadius: 99, backgroundColor: cores.amareloVivo, opacity: 0.35 + 0.65 * Math.max(0, Math.sin(f / 4 - d)) }} />
+          ))}
+        </div>
+      </div>
     </AbsoluteFill>
   );
 };
@@ -219,7 +296,7 @@ export const ReelsPerguntas: React.FC<ReelsPerguntasProps> = (props) => (
   <AbsoluteFill style={{ backgroundColor: cores.preto }}>
     {props.trilha && <Audio src={staticFile(props.trilha)} />}
     <Sequence durationInFrames={60}>
-      <Gancho {...props} />
+      {props.ganchoEstilo === "conversa" ? <GanchoConversa {...props} /> : <Gancho {...props} />}
     </Sequence>
     {props.perguntas.map((p, i) => (
       <Sequence key={i} from={60 + i * 120} durationInFrames={120}>
