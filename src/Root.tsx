@@ -1,3 +1,4 @@
+import { ReelsAgua, reelsAguaPadrao, AGUA_FPS, AGUA_DURACAO } from "./ReelsAgua";
 import { Composition, Still } from "remotion";
 import { TESTE_DURACAO, TESTE_FPS, TesteEdicao } from "./TesteEdicao";
 import { ABAS_DURACAO, ABAS_FPS, ReelsAbas, reelsAbasPadrao } from "./ReelsAbas";
@@ -93,6 +94,7 @@ export const Root: React.FC = () => (
     <Composition id="ReelsCaderno" component={ReelsCaderno} width={1080} height={1920} fps={CADERNO_FPS} durationInFrames={CADERNO_DURACAO} defaultProps={reelsCadernoPadrao} />
     <Composition id="TesteEdicao" component={TesteEdicao} width={1080} height={1920} fps={TESTE_FPS} durationInFrames={TESTE_DURACAO} />
     <Composition id="ReelsAbas" component={ReelsAbas} width={1080} height={1920} fps={ABAS_FPS} durationInFrames={ABAS_DURACAO} defaultProps={reelsAbasPadrao} />
+    <Composition id="ReelsAgua" component={ReelsAgua} width={1080} height={1920} fps={AGUA_FPS} durationInFrames={AGUA_DURACAO} defaultProps={reelsAguaPadrao} />
     <Still id="Carrossel" component={Carrossel} width={1080} height={1350} defaultProps={carrosselPadrao} />
     <Composition
       id="BoasVindas"
