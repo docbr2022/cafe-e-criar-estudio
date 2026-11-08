@@ -1,0 +1,62 @@
+{
+  "sistema": "Barber SP",
+  "icone": "tesoura",
+  "nicho": "PARA BARBEARIAS",
+  "gancho": [
+    "Sua agenda ainda",
+    "mora no caderno",
+    "e no WhatsApp?"
+  ],
+  "slogan": "Agenda, caixa e divulgação num lugar só.",
+  "legendaApresenta": "Gestão completa para a sua barbearia crescer organizada.",
+  "telas": [
+    {
+      "tipo": "imagem",
+      "arquivo": "sistemas/barbersp-reserva.jpg",
+      "titulo": "Reserva pelo celular",
+      "selo": "Serviço, barbeiro e horário",
+      "legenda": "O cliente escolhe o serviço, o barbeiro, o dia e o horário pela página da barbearia."
+    },
+    {
+      "tipo": "imagem",
+      "arquivo": "sistemas/barbersp-agendado.jpg",
+      "titulo": "Agendado na hora",
+      "selo": "Fim do caderno",
+      "legenda": "Confirmou, está na agenda. E o cliente ainda tem o WhatsApp e o endereço na mão."
+    },
+    {
+      "tipo": "imagem",
+      "arquivo": "sistemas/barbersp-faturamento.jpg",
+      "titulo": "Faturamento no painel",
+      "selo": "Caixa por período",
+      "legenda": "Atendimentos, faturamento, ticket médio e barbeiro destaque, sem planilha."
+    }
+  ],
+  "aviso": null,
+  "combo": {
+    "marketing": [
+      "Posts e Reels",
+      "Anúncios no bairro",
+      "Perfil sempre ativo"
+    ],
+    "resultado": [
+      "Agenda organizada",
+      "e cadeira cheia"
+    ],
+    "legenda": "Com a nossa gestão de marketing, a barbearia aparece e a agenda enche."
+  },
+  "url": "barbersp.com.br",
+  "cadastro": {
+    "pergunta": [
+      "Quer só",
+      "o sistema?"
+    ],
+    "botao": "Cadastre-se",
+    "legenda": "Acesse o site, faça o seu cadastro e conheça por dentro."
+  },
+  "convite": "Sistema + marketing: a gente monta com você, com um café.",
+  "cta": "Chame no WhatsApp",
+  "arroba": "@cafeecriar",
+  "trilha": null,
+  "tema": "barbersp"
+}

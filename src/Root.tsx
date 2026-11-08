@@ -9,6 +9,7 @@ import { MATRIZ_DURACAO, MATRIZ_FPS, ReelsMatriz, reelsMatrizPadrao } from "./Re
 import { MARCA_DURACAO, MARCA_FPS, ReelsMarca, reelsMarcaPadrao } from "./ReelsMarca";
 import { ERROS_DURACAO, ERROS_FPS, ReelsErros, reelsErrosPadrao } from "./ReelsErros";
 import { PERGUNTAS_DURACAO, PERGUNTAS_FPS, ReelsPerguntas, reelsPerguntasPadrao } from "./ReelsPerguntas";
+import { ReelsSistema, reelsSistemaPadrao, SISTEMA_DURACAO, SISTEMA_FPS } from "./ReelsSistema";
 import { OFERTA_ABERTURA_DURACAO, OFERTA_DURACAO, OFERTA_FPS, OFERTA_PRECO_DURACAO, ReelsOferta, reelsOfertaPadrao } from "./ReelsOferta";
 
 export const Root: React.FC = () => (
@@ -70,6 +71,15 @@ export const Root: React.FC = () => (
       durationInFrames={PERGUNTAS_DURACAO}
       defaultProps={reelsPerguntasPadrao}
       calculateMetadata={({ props }) => ({ durationInFrames: 60 + props.perguntas.length * 120 + 120 })}
+    />
+    <Composition
+      id="ReelsSistema"
+      component={ReelsSistema}
+      width={1080}
+      height={1920}
+      fps={SISTEMA_FPS}
+      durationInFrames={SISTEMA_DURACAO}
+      defaultProps={reelsSistemaPadrao}
     />
     <Still id="Carrossel" component={Carrossel} width={1080} height={1350} defaultProps={carrosselPadrao} />
     <Composition

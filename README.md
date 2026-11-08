@@ -6,6 +6,7 @@ Templates da Café e Criar Marketing Design em [Remotion](https://www.remotion.d
 |---|---|---|
 | `FeedPost` | 1080×1350 (4:5), imagem | Arte de feed do Instagram |
 | `Reels` | 1080×1920 (9:16), 9 s a 30 fps | Reels e Stories |
+| `ReelsSistema` | 1080×1920 (9:16), 30 s a 30 fps | Demonstração de sistema (SuperMenu SP, Barber SP, ImobiCore): gancho, telas animadas no celular, sistema + marketing, cadastro pela URL e chamada. Props dos três em `props/sistemas/`, com prints reais em `public/sistemas/` e a paleta do site de cada sistema na prop `tema` (`supermenu`, `barbersp`, `imobicore`; sem tema, cores da Café e Criar). Uma tela `{ "tipo": "imagem", "arquivo": "..." }` troca a tela desenhada por um print real, que rola dentro do celular |
 
 Os textos de cada peça são props (`kicker`, `titulo`, `destaque`, `texto`, `cta`...), então uma nova peça não exige mexer no layout.
 
