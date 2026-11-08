@@ -35,7 +35,22 @@ import {
   faWallet,
 } from "@fortawesome/free-solid-svg-icons";
 import { AbsoluteFill, Audio, Easing, Img, interpolate, random, Sequence, staticFile, useCurrentFrame } from "remotion";
-import { cores, fontes } from "./marca";
+import { cores as coresMarca, fontes } from "./marca";
+
+// Paleta de cada sistema, tirada dos prints dos sites (mesmos temas do ReelsCupom).
+// preto = fundo dominante, fundo2/destaque2 = fundo e destaque da cena "sistema + marketing", amareloVivo/amarelo = destaque,
+// ouro = destaque sobre fundo claro, listra = listras e grãos sobre fundo escuro, offWhite = cenas claras.
+export const TEMAS_SISTEMA = {
+  supermenu: { preto: "#141414", fundo2: "#C81D25", destaque2: "#141414", amareloVivo: "#F26B0F", amarelo: "#F26B0F", ouro: "#C81D25", listra: "#C81D25", offWhite: "#FFF3E6", borda: "#F3DCC6" },
+  barbersp: { preto: "#0B0B0B", fundo2: "#1C1C1E", destaque2: "#F29C00", amareloVivo: "#F29C00", amarelo: "#F29C00", ouro: "#C77F00", listra: "#BFC3C8", offWhite: "#F2F2F3", borda: "#DCDDE0" },
+  imobicore: { preto: "#001A40", fundo2: "#1B4FD1", destaque2: "#B9CEFF", amareloVivo: "#6F9BFF", amarelo: "#6F9BFF", ouro: "#1B4FD1", listra: "#1B4FD1", offWhite: "#EEF3FF", borda: "#D3DEF5" },
+} as const;
+export type TemaSistema = keyof typeof TEMAS_SISTEMA;
+
+// Paleta ativa: a marca Café e Criar por padrão, trocada pelo tema no início do render.
+const base = { ...coresMarca, fundo2: coresMarca.preto, destaque2: coresMarca.amareloVivo, listra: coresMarca.ouro };
+const cores: typeof base = { ...base };
+const alfa = (hex: string, a: number) => `${hex}${Math.round(a * 255).toString(16).padStart(2, "0")}`;
 import { Graos, Icone, Pop, prog, Revela } from "./ReelsOferta";
 
 // Reels de demonstração de sistema (SuperMenu SP, Barber SP, ImobiCore), 30 s a 30 fps.
@@ -129,6 +144,8 @@ export type ReelsSistemaProps = {
   cta: string;
   arroba: string;
   trilha: string | null;
+  // Paleta do site do sistema; sem tema, usa a marca Café e Criar.
+  tema?: TemaSistema | null;
 };
 
 // ------------------------------------------------------------ utilidades
@@ -315,7 +332,7 @@ const TelaLista: React.FC<{ tela: Extract<Tela, { tipo: "lista" }>; sistema: str
           fontWeight: 600,
           fontSize: 28,
           color: cores.preto,
-          boxShadow: "0 10px 30px rgba(217,182,7,.45)",
+          boxShadow: `0 10px 30px ${alfa(cores.amarelo, 0.45)}`,
         }}
       >
         <span>{tela.rodape}</span>
@@ -388,7 +405,7 @@ const TelaAgenda: React.FC<{ tela: Extract<Tela, { tipo: "agenda" }>; sistema: s
                 lineHeight: 1.2,
                 opacity: p,
                 transform: `scale(${0.4 + 0.6 * p}) translateY(${(1 - p) * 30}px)`,
-                boxShadow: `0 0 ${decai(f, em, 6) * 40}px rgba(255,228,0,.9)`,
+                boxShadow: `0 0 ${decai(f, em, 6) * 40}px ${alfa(cores.amareloVivo, 0.9)}`,
               }}
             >
               <Icone icone={faCheck} tamanho={18} cor={k % 3 === 2 ? cores.amareloVivo : cores.preto} /> {r.cliente}
@@ -546,7 +563,7 @@ const Gancho: React.FC<ReelsSistemaProps> = ({ gancho, nicho, icone }) => {
   const titulo: React.CSSProperties = { fontFamily: fontes.titulo, fontWeight: 800, fontSize: 108, lineHeight: 0.98, color: cores.branco };
   return (
     <AbsoluteFill style={{ backgroundColor: cores.preto }}>
-      <Listras cor={cores.ouro} opacidade={0.18} />
+      <Listras cor={cores.listra} opacidade={0.18} />
       <div style={{ position: "absolute", right: -90, top: 150, transform: `scale(${1 + bate * 0.08}) rotate(${-10 + Math.sin(f / 8) * 3}deg)` }}>
         <Icone icone={ic(icone)} tamanho={720} cor={cores.amareloVivo} />
       </div>
@@ -616,8 +633,8 @@ const CenaTela: React.FC<{ n: number; tela: Tela; sistema: string; icone: string
   const selo = prog(f, 26, 10);
   return (
     <AbsoluteFill style={{ backgroundColor: fundo }}>
-      <Listras cor={clara ? cores.borda : cores.ouro} opacidade={clara ? 0.7 : 0.14} velocidade={lado * 5} />
-      <Graos cor={clara ? cores.amarelo : cores.ouro} seed={n + 3} />
+      <Listras cor={clara ? cores.borda : cores.listra} opacidade={clara ? 0.7 : 0.14} velocidade={lado * 5} />
+      <Graos cor={clara ? cores.amarelo : cores.listra} seed={n + 3} />
       {/* progresso 1/3 2/3 3/3 */}
       <div style={{ position: "absolute", top: 100, left: 90, right: 90, display: "flex", gap: 18 }}>
         {[1, 2, 3].map((i) => (
@@ -691,14 +708,14 @@ const Combo: React.FC<ReelsSistemaProps> = ({ sistema, icone, combo }) => {
   const H = 360;
   const path = pontos.map((p, i) => `${i === 0 ? "M" : "L"} ${(i / (pontos.length - 1)) * W} ${H - p * H}`).join(" ");
   return (
-    <AbsoluteFill style={{ backgroundColor: cores.preto }}>
-      <Listras cor={cores.ouro} opacidade={0.14} velocidade={8} />
+    <AbsoluteFill style={{ backgroundColor: cores.fundo2 }}>
+      <Listras cor={cores.listra} opacidade={0.14} velocidade={8} />
       <div style={{ position: "absolute", top: 120, left: 80, right: 80 }}>
-        <div style={{ fontFamily: fontes.texto, fontWeight: 600, fontSize: 34, letterSpacing: "0.18em", color: cores.amareloVivo }}>A COMBINAÇÃO QUE TURBINA</div>
+        <div style={{ fontFamily: fontes.texto, fontWeight: 600, fontSize: 34, letterSpacing: "0.18em", color: cores.destaque2 }}>A COMBINAÇÃO QUE TURBINA</div>
         <Revela em={2} style={{ fontFamily: fontes.titulo, fontWeight: 800, fontSize: 96, lineHeight: 1, color: cores.branco }}>
           Sistema + marketing
         </Revela>
-        <Revela em={8} style={{ fontFamily: fontes.titulo, fontWeight: 800, fontSize: 96, lineHeight: 1, color: cores.amareloVivo }}>
+        <Revela em={8} style={{ fontFamily: fontes.titulo, fontWeight: 800, fontSize: 96, lineHeight: 1, color: cores.destaque2 }}>
           = resultado turbinado
         </Revela>
       </div>
@@ -745,7 +762,7 @@ const Combo: React.FC<ReelsSistemaProps> = ({ sistema, icone, combo }) => {
       {/* fase 2: resultado */}
       {f >= 58 && (
         <div style={{ position: "absolute", top: 620, left: 70, right: 70, opacity: resultado, transform: `scale(${0.8 + 0.2 * resultado})` }}>
-          <div style={{ backgroundColor: cores.amareloVivo, borderRadius: 32, padding: "40px 40px 30px", boxShadow: "0 0 80px rgba(255,228,0,.35)" }}>
+          <div style={{ backgroundColor: cores.amareloVivo, borderRadius: 32, padding: "40px 40px 30px", boxShadow: `0 0 80px ${alfa(cores.amareloVivo, 0.35)}` }}>
             <div style={{ display: "flex", alignItems: "center", gap: 18 }}>
               <Icone icone={faRocket} tamanho={70} cor={cores.preto} style={{ transform: `translate(${linha * 20}px, ${-linha * 20}px)` }} />
               <div style={{ fontFamily: fontes.titulo, fontWeight: 800, fontSize: 58, lineHeight: 1, color: cores.preto }}>
@@ -818,7 +835,7 @@ const Cadastro: React.FC<ReelsSistemaProps> = ({ url, cadastro }) => {
               fontSize: 40,
               opacity: prog(f, 54, 8),
               transform: `scale(${f >= clique && f < clique + 5 ? 0.94 : 1 + decai(f, clique + 6, 6) * 0.06})`,
-              boxShadow: "0 10px 30px rgba(217,182,7,.45)",
+              boxShadow: `0 10px 30px ${alfa(cores.amarelo, 0.45)}`,
             }}
           >
             {ok ? (
@@ -842,10 +859,10 @@ const Chamada: React.FC<ReelsSistemaProps> = ({ convite, cta, arroba, url }) => 
   const brilho = Math.exp(-(f % 15) / 4);
   return (
     <AbsoluteFill style={{ backgroundColor: cores.preto, alignItems: "center", justifyContent: "center", gap: 48, padding: "0 80px 140px" }}>
-      <Listras cor={cores.ouro} opacidade={0.12} velocidade={3} />
+      <Listras cor={cores.listra} opacidade={0.12} velocidade={3} />
       {[0, 1, 2, 3, 4, 5, 6, 7].map((k) => {
         const p = prog(f, k * 15, 30);
-        return <div key={k} style={{ position: "absolute", width: 300 + p * 1300, height: 300 + p * 1300, ...pill, border: `4px solid ${cores.ouro}`, opacity: f < k * 15 ? 0 : (1 - p) * 0.45 }} />;
+        return <div key={k} style={{ position: "absolute", width: 300 + p * 1300, height: 300 + p * 1300, ...pill, border: `4px solid ${cores.listra}`, opacity: f < k * 15 ? 0 : (1 - p) * 0.45 }} />;
       })}
       <Pop em={0} de={0.8}>
         <Img src={staticFile("logo-full.png")} style={{ width: 840 }} />
@@ -866,7 +883,7 @@ const Chamada: React.FC<ReelsSistemaProps> = ({ convite, cta, arroba, url }) => 
           fontSize: 56,
           padding: "32px 66px",
           ...pill,
-          boxShadow: `0 0 ${30 + brilho * 50}px rgba(255,228,0,${0.35 + brilho * 0.35})`,
+          boxShadow: `0 0 ${30 + brilho * 50}px ${alfa(cores.amareloVivo, 0.35 + brilho * 0.35)}`,
         }}
       >
         <Icone icone={faWhatsapp} tamanho={66} cor={cores.preto} />
@@ -884,6 +901,7 @@ const Chamada: React.FC<ReelsSistemaProps> = ({ convite, cta, arroba, url }) => 
 };
 
 export const ReelsSistema: React.FC<ReelsSistemaProps> = (props) => {
+  Object.assign(cores, base, props.tema ? TEMAS_SISTEMA[props.tema] : {});
   const f = useCurrentFrame();
   const t = ultimo(f);
   const tremor = decai(f, t, 4);
@@ -1000,4 +1018,5 @@ export const reelsSistemaPadrao: ReelsSistemaProps = {
   cta: "Chame no WhatsApp",
   arroba: "@cafeecriar",
   trilha: null,
+  tema: "supermenu",
 };
