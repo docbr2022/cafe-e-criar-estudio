@@ -38,7 +38,7 @@ export type ReelsOfertaProps = {
   abrirComPreco?: boolean;
   precoTitulo?: [string, string];
   // Versão "abertura": troca gancho e xícara por uma cena de 2,5 s (palavra riscada + frase), depois preço.
-  abertura?: { riscado: string; frase: [string, string] };
+  abertura?: { riscado: string; frase: [string, string]; estilo?: "faixa" | "etiqueta" };
 };
 
 export const reelsOfertaPadrao: ReelsOfertaProps = {
@@ -524,12 +524,87 @@ const Abertura: React.FC<ReelsOfertaProps> = ({ abertura }) => {
   );
 };
 
+// Abertura "etiqueta" (0–75): fundo claro, palavra riscada em cima, etiqueta de preço preta balançando
+// no centro e a frase embaixo com marca-texto. Quebra a sequência de capas pretas no feed.
+const AberturaEtiqueta: React.FC<ReelsOfertaProps> = ({ abertura, plano, preco, periodo }) => {
+  const f = useCurrentFrame();
+  if (!abertura) return null;
+  const bate = f >= 16 ? Math.exp(-(f - 16) / 5) : 0;
+  const balanco = Math.sin(f / 9) * 5 * Math.exp(-f / 60) + Math.sin(f / 14) * 1.5;
+  const titulo: React.CSSProperties = { fontFamily: fontes.titulo, fontWeight: 800, fontSize: 124, lineHeight: 1.02, color: cores.tinta };
+  return (
+    <AbsoluteFill style={{ backgroundColor: cores.offWhite }}>
+      <div style={{ position: "absolute", left: 80, right: 80, top: 290, display: "flex", flexWrap: "nowrap", gap: "0 30px" }}>
+        {abertura.riscado.split(" ").map((p, i) => (
+          <div key={p} style={{ position: "relative", fontFamily: fontes.titulo, fontWeight: 800, fontSize: 128, lineHeight: 1, color: cores.cinza500 }}>
+            {p}
+            <div
+              style={{
+                position: "absolute",
+                left: -12,
+                top: "48%",
+                height: 22,
+                borderRadius: 99,
+                width: `${prog(f, 8 + i * 5, 7) * 108}%`,
+                backgroundColor: cores.tinta,
+                transform: "rotate(-4deg)",
+              }}
+            />
+          </div>
+        ))}
+      </div>
+      {/* barbante + etiqueta */}
+      <div style={{ position: "absolute", left: 540, top: 540, width: 760, marginLeft: -380, transformOrigin: "380px 0px", transform: `rotate(${balanco}deg)` }}>
+        <div style={{ position: "absolute", left: 377, top: -60, width: 6, height: 120, backgroundColor: cores.tinta, borderRadius: 3 }} />
+        <div
+          style={{
+            marginTop: 40,
+            backgroundColor: cores.preto,
+            borderRadius: 48,
+            padding: "110px 60px 60px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            boxShadow: "0 30px 60px rgba(0,0,0,.18)",
+            position: "relative",
+            transform: `scale(${1 + bate * 0.04})`,
+          }}
+        >
+          <div style={{ position: "absolute", top: 34, left: 350, width: 60, height: 60, borderRadius: 99, backgroundColor: cores.offWhite, border: `6px solid ${cores.tinta}` }} />
+          <div style={{ fontFamily: fontes.texto, fontWeight: 600, fontSize: 38, letterSpacing: "0.18em", color: cores.amareloVivo }}>{plano}</div>
+          <div style={{ display: "flex", alignItems: "flex-start", marginTop: 10 }}>
+            <span style={{ fontFamily: fontes.titulo, fontWeight: 700, fontSize: 90, color: cores.branco, marginTop: 44, marginRight: 14 }}>R$</span>
+            <span style={{ fontFamily: fontes.titulo, fontWeight: 800, fontSize: 300, lineHeight: 1, color: cores.amareloVivo }}>{preco}</span>
+          </div>
+          <div style={{ fontFamily: fontes.titulo, fontWeight: 700, fontSize: 80, lineHeight: 1, color: cores.branco, marginTop: -16 }}>{periodo}</div>
+        </div>
+      </div>
+      <AbsoluteFill style={{ justifyContent: "flex-end", padding: "0 80px 300px", alignItems: "flex-start" }}>
+        <div style={titulo}>{abertura.frase[0]}</div>
+        <div
+          style={{
+            ...titulo,
+            backgroundColor: cores.amarelo,
+            padding: "0 22px 8px",
+            borderRadius: 14,
+            marginLeft: -10,
+            transform: `scale(${1 + bate * 0.05})`,
+            transformOrigin: "left center",
+          }}
+        >
+          {abertura.frase[1]}
+        </div>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
 // Abertura, 13,5 s: abertura (0–75) → preço (75–135) → entregas (135–255) → prazo (255–315) → chamada (315–405).
 export const OFERTA_ABERTURA_DURACAO = 405;
 const ReelsOfertaAbertura: React.FC<ReelsOfertaProps> = (props) => (
   <AbsoluteFill style={{ backgroundColor: cores.preto }}>
     <Sequence durationInFrames={75}>
-      <Abertura {...props} />
+      {props.abertura?.estilo === "etiqueta" ? <AberturaEtiqueta {...props} /> : <Abertura {...props} />}
     </Sequence>
     <Sequence from={75} durationInFrames={60}>
       <Preco {...props} />

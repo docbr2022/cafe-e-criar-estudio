@@ -1,5 +1,5 @@
 import { faWhatsapp } from "@fortawesome/free-brands-svg-icons";
-import { faArrowRight, faBookmark } from "@fortawesome/free-solid-svg-icons";
+import { faArrowRight, faBookmark, faCheck } from "@fortawesome/free-solid-svg-icons";
 import { AbsoluteFill, Img, staticFile } from "remotion";
 import { Titulo } from "./FeedPost";
 import { cores, fontes } from "./marca";
@@ -22,6 +22,8 @@ export type CarrosselProps = {
   rotulo?: string;
   // Texto gigante da capa; padrão = número de itens.
   numeroCapa?: string;
+  // "numero" (padrão): capa preta com número gigante. "lista": capa e lâminas claras, em formato de checklist de papel.
+  estilo?: "numero" | "lista";
 };
 
 export const carrosselPadrao: CarrosselProps = {
@@ -207,8 +209,117 @@ const Fechamento: React.FC<CarrosselProps & { total: number }> = ({ fechamento, 
   </AbsoluteFill>
 );
 
+// ---- Estilo "lista": fundo claro, caixas de seleção, sem número gigante ----
+const Caixa: React.FC<{ marcada: boolean; tam: number }> = ({ marcada, tam }) => (
+  <div
+    style={{
+      flex: "0 0 auto",
+      width: tam,
+      height: tam,
+      borderRadius: tam * 0.24,
+      backgroundColor: marcada ? cores.amarelo : cores.branco,
+      border: marcada ? "none" : `${Math.max(3, tam * 0.06)}px solid ${"#c9c9c9"}`,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    }}
+  >
+    {marcada && <Icone icone={faCheck} tamanho={tam * 0.6} cor={cores.preto} />}
+  </div>
+);
+
+const Marcador: React.FC<{ titulo: string; destaque: string; style: React.CSSProperties }> = ({ titulo, destaque, style }) => {
+  const i = destaque ? titulo.indexOf(destaque) : -1;
+  if (i < 0) return <h1 style={style}>{titulo}</h1>;
+  return (
+    <h1 style={style}>
+      {titulo.slice(0, i)}
+      <span style={{ backgroundColor: cores.amarelo, padding: "0 14px", borderRadius: 12, boxDecorationBreak: "clone", WebkitBoxDecorationBreak: "clone" }}>{destaque}</span>
+      {titulo.slice(i + destaque.length)}
+    </h1>
+  );
+};
+
+const CapaLista: React.FC<CarrosselProps & { total: number }> = ({ kicker, titulo, destaque, apoio, arroba, total, itens }) => (
+  <AbsoluteFill style={{ backgroundColor: cores.offWhite }}>
+    <div style={{ position: "absolute", left: 96, right: 96, top: 90, display: "flex", flexDirection: "column", gap: 26 }}>
+      <div
+        style={{
+          alignSelf: "flex-start",
+          backgroundColor: cores.preto,
+          color: cores.amareloVivo,
+          fontFamily: fontes.texto,
+          fontWeight: 600,
+          fontSize: 28,
+          letterSpacing: "0.18em",
+          padding: "10px 26px",
+          borderRadius: 999,
+        }}
+      >
+        {kicker}
+      </div>
+      <Marcador titulo={titulo} destaque={destaque} style={{ margin: 0, fontFamily: fontes.titulo, fontWeight: 800, fontSize: 92, lineHeight: 1.16, color: cores.tinta }} />
+    </div>
+    <div
+      style={{
+        position: "absolute",
+        left: 110,
+        right: 110,
+        top: 580,
+        backgroundColor: cores.branco,
+        borderRadius: 20,
+        padding: "40px 46px",
+        boxShadow: "0 18px 44px rgba(0,0,0,.10)",
+        transform: "rotate(-2deg)",
+        display: "flex",
+        flexDirection: "column",
+        gap: 24,
+      }}
+    >
+      {itens.map((it, i) => (
+        <div key={i} style={{ display: "flex", alignItems: "center", gap: 26, paddingBottom: i < itens.length - 1 ? 24 : 0, borderBottom: i < itens.length - 1 ? `2px solid ${cores.borda}` : "none" }}>
+          <Caixa marcada={i < 2} tam={52} />
+          <div style={{ fontFamily: fontes.texto, fontWeight: 500, fontSize: 34, color: i < 2 ? cores.cinza500 : cores.tinta, textDecoration: i < 2 ? "line-through" : "none" }}>{it.titulo}</div>
+        </div>
+      ))}
+    </div>
+    <div style={{ position: "absolute", left: 96, right: 96, bottom: 166, fontFamily: fontes.texto, fontSize: 32, color: cores.cinza700 }}>{apoio}</div>
+    <Rodape atual={0} total={total} escuro={false} arroba={arroba} seta />
+  </AbsoluteFill>
+);
+
+const ItemLista: React.FC<{ n: number; item: ItemCarrossel; itens: ItemCarrossel[]; total: number; arroba: string; rotulo: string }> = ({ n, item, itens, total, arroba, rotulo }) => {
+  const branco = n % 2 === 0;
+  return (
+    <AbsoluteFill style={{ backgroundColor: branco ? cores.branco : cores.offWhite }}>
+      <div style={{ position: "absolute", left: 96, top: 110, fontFamily: fontes.texto, fontWeight: 600, fontSize: 30, letterSpacing: "0.18em", color: cores.ouro }}>
+        {`${rotulo} ${n} DE ${total - 2}`}
+      </div>
+      <div style={{ position: "absolute", left: 96, top: 200 }}>
+        <Caixa marcada tam={240} />
+      </div>
+      <div style={{ position: "absolute", left: 96, right: 96, top: 540, display: "flex", flexDirection: "column", gap: 40 }}>
+        <h1 style={{ margin: 0, fontFamily: fontes.titulo, fontWeight: 800, fontSize: 108, lineHeight: 1.02, color: cores.tinta }}>{item.titulo}</h1>
+        <div style={{ fontFamily: fontes.texto, fontSize: 42, lineHeight: 1.5, color: cores.cinza700, borderLeft: `8px solid ${cores.amarelo}`, paddingLeft: 32 }}>{item.texto}</div>
+      </div>
+      <div style={{ position: "absolute", left: 96, right: 96, bottom: 180, display: "flex", gap: 16, alignItems: "center" }}>
+        {itens.map((_, i) => (
+          <Caixa key={i} marcada={i < n} tam={44} />
+        ))}
+        <div style={{ marginLeft: 12, fontFamily: fontes.texto, fontWeight: 500, fontSize: 28, color: cores.cinza500 }}>{`${n} de ${itens.length} conferidos`}</div>
+      </div>
+      <Rodape atual={n} total={total} escuro={false} arroba={arroba} seta />
+    </AbsoluteFill>
+  );
+};
+
 export const Carrossel: React.FC<CarrosselProps> = (props) => {
   const total = props.itens.length + 2;
+  if (props.estilo === "lista") {
+    if (props.slide <= 0) return <CapaLista {...props} total={total} />;
+    if (props.slide < total - 1)
+      return <ItemLista n={props.slide} item={props.itens[props.slide - 1]} itens={props.itens} total={total} arroba={props.arroba} rotulo={props.rotulo ?? "ITEM"} />;
+  }
   if (props.slide <= 0) return <Capa {...props} total={total} />;
   if (props.slide >= total - 1) return <Fechamento {...props} total={total} />;
   return <Sinal n={props.slide} item={props.itens[props.slide - 1]} total={total} arroba={props.arroba} rotulo={props.rotulo ?? "SINAL"} />;

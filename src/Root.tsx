@@ -1,4 +1,10 @@
 import { Composition, Still } from "remotion";
+import { TESTE_DURACAO, TESTE_FPS, TesteEdicao } from "./TesteEdicao";
+import { ABAS_DURACAO, ABAS_FPS, ReelsAbas, reelsAbasPadrao } from "./ReelsAbas";
+import { CADERNO_DURACAO, CADERNO_FPS, ReelsCaderno, reelsCadernoPadrao } from "./ReelsCaderno";
+import { COMANDA_DURACAO, COMANDA_FPS, ReelsComanda, reelsComandaPadrao } from "./ReelsComanda";
+import { CONVERSA_FPS, conversaDuracao, ReelsConversa, reelsConversaPadrao } from "./ReelsConversa";
+import { CUPOM_DURACAO, CUPOM_FPS, ReelsCupom, reelsCupomPadrao } from "./ReelsCupom";
 import { BOAS_VINDAS_DURACAO, BOAS_VINDAS_FPS, BoasVindas, boasVindasPadrao } from "./BoasVindas";
 import { BoasVindasRock, boasVindasRockPadrao, ROCK_DURACAO, ROCK_FPS } from "./BoasVindasRock";
 import { FeedPost, feedPostPadrao } from "./FeedPost";
@@ -81,6 +87,12 @@ export const Root: React.FC = () => (
       durationInFrames={SISTEMA_DURACAO}
       defaultProps={reelsSistemaPadrao}
     />
+    <Composition id="ReelsCupom" component={ReelsCupom} width={1080} height={1920} fps={CUPOM_FPS} durationInFrames={CUPOM_DURACAO} defaultProps={reelsCupomPadrao} />
+    <Composition id="ReelsConversa" component={ReelsConversa} width={1080} height={1920} fps={CONVERSA_FPS} durationInFrames={conversaDuracao(4)} defaultProps={reelsConversaPadrao} calculateMetadata={({ props }) => ({ durationInFrames: conversaDuracao(props.perguntas.length) })} />
+    <Composition id="ReelsComanda" component={ReelsComanda} width={1080} height={1920} fps={COMANDA_FPS} durationInFrames={COMANDA_DURACAO} defaultProps={reelsComandaPadrao} />
+    <Composition id="ReelsCaderno" component={ReelsCaderno} width={1080} height={1920} fps={CADERNO_FPS} durationInFrames={CADERNO_DURACAO} defaultProps={reelsCadernoPadrao} />
+    <Composition id="TesteEdicao" component={TesteEdicao} width={1080} height={1920} fps={TESTE_FPS} durationInFrames={TESTE_DURACAO} />
+    <Composition id="ReelsAbas" component={ReelsAbas} width={1080} height={1920} fps={ABAS_FPS} durationInFrames={ABAS_DURACAO} defaultProps={reelsAbasPadrao} />
     <Still id="Carrossel" component={Carrossel} width={1080} height={1350} defaultProps={carrosselPadrao} />
     <Composition
       id="BoasVindas"
