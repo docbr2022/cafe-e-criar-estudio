@@ -1,3 +1,4 @@
+import { loadFont } from "@remotion/fonts";
 import { AbsoluteFill, Img, interpolate, random, Sequence, spring, staticFile, useCurrentFrame, useVideoConfig } from "remotion";
 import { cores, fontes } from "./marca";
 import { prog, Revela } from "./ReelsOferta";
@@ -24,14 +25,14 @@ export type ReelsWGProps = {
 };
 
 export const reelsWGPadrao: ReelsWGProps = {
-  logo: null,
+  logo: "clientes/wg-logo.png",
   cliente: "WG",
   segmento: "AMBIENTAL",
   gancho: ["Toda obra", "gera entulho."],
   identidade: [
-    { titulo: "AMARELO", sentido: "A cor da sinalização: atenção e segurança no canteiro" },
-    { titulo: "PRETO", sentido: "Força e robustez, como o aço das caçambas" },
-    { titulo: "LETRA PESADA", sentido: "Solidez de quem está há 12 anos no mercado" },
+    { titulo: "SÍMBOLO FACETADO", sentido: "Ângulos que lembram a rigidez do aço e a estrutura das caçambas" },
+    { titulo: "AMARELO SEGURANÇA", sentido: "A dureza do aço, confiabilidade e seriedade" },
+    { titulo: "CINZA INDUSTRIAL", sentido: "No lugar do preto, o grafite liga a marca ao cuidado ambiental" },
   ],
   numeros: [
     { valor: 12, sufixo: "", rotulo: "anos de mercado" },
@@ -40,16 +41,22 @@ export const reelsWGPadrao: ReelsWGProps = {
     { valor: 24, sufixo: "h", rotulo: "de atendimento, todos os dias" },
   ],
   ciclo: ["Pedido", "Entrega na obra", "3 a 7 dias na obra", "Retirada", "Destinação", "Triagem"],
-  aplicacoes: ["Caçamba", "Caminhão", "Uniforme", "Instagram"],
+  aplicacoes: ["Caçamba", "Caminhão", "Papelaria"],
   fecho: ["Uma marca que trabalha", "tão pesado quanto a empresa."],
 };
 
-// Paleta: amarelo e preto da WG (próxima da Café e Criar), concreto e poeira de obra.
-const amarelo = cores.amareloVivo;
-const preto = "#0B0B0B";
-const asfalto = "#17171A";
+// Paleta oficial do manual da WG: Amarelo Segurança, Cinza Industrial (grafite), Cinza Concreto e branco.
+const amarelo = "#FFD700";
+const grafite = "#36454F";
+const preto = "#222C33"; // grafite escuro para contraste
+const asfalto = grafite;
+const aco = "#646C73"; // cinza da caçamba real
 const concreto = "#8E8A80";
 const poeira = "#C9B993";
+
+// Fonte oficial da WG (manual): Unbounded.
+["500", "700", "800"].forEach((p) => loadFont({ family: "Unbounded", url: staticFile(`fontes/Unbounded-${p}.woff2`), weight: p, format: "woff2" }));
+const titulo = "Unbounded, 'Baloo 2', sans-serif";
 
 const pancada = (f: number) => Math.exp(-(f % COMPASSO) / 5);
 
@@ -74,7 +81,7 @@ const Zebrado: React.FC<{ altura?: number; style?: React.CSSProperties; anda?: n
 // Caçamba estacionária vista de lado (formato trapézio, nervuras e alças).
 export const Cacamba: React.FC<{ largura: number; cor?: string; enche?: number; marca?: React.ReactNode; style?: React.CSSProperties }> = ({
   largura,
-  cor = amarelo,
+  cor = aco,
   enche = 0,
   marca,
   style,
@@ -185,39 +192,16 @@ const Poeira: React.FC<{ em: number; x: number; y: number; qtd?: number; raio?: 
 };
 
 // Logotipo: arquivo enviado pelo Danilo ou versão provisória desenhada em código.
-const Logo: React.FC<ReelsWGProps & { largura: number; sobreAmarelo?: boolean }> = ({ logo, cliente, segmento, largura, sobreAmarelo }) => {
-  if (logo) return <Img src={staticFile(logo)} style={{ width: largura, objectFit: "contain" }} />;
+const Logo: React.FC<ReelsWGProps & { largura: number; sobreAmarelo?: boolean; simbolo?: boolean }> = ({ logo, cliente, segmento, largura, sobreAmarelo, simbolo }) => {
+  if (logo) {
+    const arq = (simbolo ? logo.replace("logo", "simbolo") : logo).replace(".png", sobreAmarelo ? "-grafite.png" : ".png");
+    return <Img src={staticFile(arq)} style={{ width: largura, display: "block" }} />;
+  }
   const s = largura / 600;
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: largura }}>
-      <div
-        style={{
-          fontFamily: fontes.titulo,
-          fontWeight: 800,
-          fontSize: 300 * s,
-          lineHeight: 0.8,
-          letterSpacing: "-0.04em",
-          color: sobreAmarelo ? preto : amarelo,
-          paddingTop: 30 * s,
-        }}
-      >
-        {cliente}
-      </div>
-      <div
-        style={{
-          marginTop: 10 * s,
-          backgroundColor: sobreAmarelo ? preto : amarelo,
-          color: sobreAmarelo ? amarelo : preto,
-          fontFamily: fontes.titulo,
-          fontWeight: 800,
-          fontSize: 64 * s,
-          letterSpacing: "0.3em",
-          padding: `${4 * s}px ${20 * s}px ${0}px ${32 * s}px`,
-          borderRadius: 8 * s,
-        }}
-      >
-        {segmento}
-      </div>
+      <div style={{ fontFamily: titulo, fontWeight: 800, fontSize: 260 * s, lineHeight: 0.9, color: sobreAmarelo ? preto : amarelo }}>{cliente}</div>
+      {!simbolo && <div style={{ fontFamily: titulo, fontWeight: 700, fontSize: 56 * s, color: sobreAmarelo ? preto : amarelo }}>{segmento}</div>}
     </div>
   );
 };
@@ -296,9 +280,9 @@ const Gancho: React.FC<ReelsWGProps> = ({ gancho }) => {
               <div
                 key={l}
                 style={{
-                  fontFamily: fontes.titulo,
+                  fontFamily: titulo,
                   fontWeight: 800,
-                  fontSize: 140,
+                  fontSize: 100,
                   lineHeight: 1,
                   color: i ? amarelo : cores.branco,
                   transform: `translateY(${(1 - e) * -300}px) scale(${1 + (1 - e) * 0.5})`,
@@ -334,17 +318,17 @@ const Revelacao: React.FC<ReelsWGProps> = (props) => {
       <Canteiro />
       <AbsoluteFill style={{ transform: `translate(${Math.sin(f * 2.3) * t}px, ${Math.cos(f * 3.1) * t}px) scale(${zoom})`, transformOrigin: "50% 52%" }}>
         {/* chão */}
-        <div style={{ position: "absolute", left: 0, right: 0, top: 1160, height: 800, backgroundColor: "#101012", borderTop: `6px solid ${amarelo}` }} />
+        <div style={{ position: "absolute", left: 0, right: 0, top: 1160, height: 800, backgroundColor: preto, borderTop: `6px solid ${amarelo}` }} />
         <Zebrado altura={50} style={{ top: 1720 }} />
         <div style={{ position: "absolute", left: 140, top: 760 + y }}>
-          <Cacamba largura={800} marca={<Logo {...props} largura={300} sobreAmarelo />} />
+          <Cacamba largura={800} marca={<Logo {...props} largura={280} />} />
         </div>
         <Poeira em={8} x={540} y={1150} qtd={30} raio={620} />
       </AbsoluteFill>
       <AbsoluteFill style={{ backgroundColor: amarelo, opacity: interpolate(f, [0, 6], [0.9, 0], { extrapolateRight: "clamp" }) }} />
       <div style={{ position: "absolute", top: 1290, left: 0, right: 0, textAlign: "center", opacity: texto, transform: `translateY(${(1 - texto) * 40}px)` }}>
         <div style={{ fontFamily: fontes.texto, fontWeight: 600, fontSize: 34, letterSpacing: "0.24em", color: amarelo }}>CASE CAFÉ E CRIAR</div>
-        <div style={{ fontFamily: fontes.titulo, fontWeight: 800, fontSize: 92, lineHeight: 1.05, color: cores.branco, marginTop: 10 }}>
+        <div style={{ fontFamily: titulo, fontWeight: 800, fontSize: 54, lineHeight: 1.15, color: cores.branco, marginTop: 10 }}>
           A marca da
           <br />
           WG Ambiental
@@ -363,11 +347,11 @@ const Identidade: React.FC<ReelsWGProps> = (props) => {
     <Cena>
       <Kicker top={230}>POR TRÁS DA MARCA</Kicker>
       <div style={{ position: "absolute", top: 340, left: 0, right: 0, display: "flex", justifyContent: "center", transform: `scale(${1 + pancada(f) * 0.03})` }}>
-        <div style={{ backgroundColor: amarelo, borderRadius: 40, padding: "60px 80px", boxShadow: `0 30px 80px rgba(0,0,0,.5)` }}>
-          <Logo {...props} largura={520} sobreAmarelo />
+        <div style={{ backgroundColor: preto, borderRadius: 40, padding: "60px 70px", boxShadow: `0 30px 80px rgba(0,0,0,.4)`, border: `4px solid ${amarelo}` }}>
+          <Logo {...props} largura={540} />
         </div>
       </div>
-      <Revela em={8} style={{ fontFamily: fontes.titulo, fontWeight: 800, fontSize: 70, lineHeight: 1.05, color: cores.branco, textAlign: "center", padding: "0 80px", marginTop: 1010 }}>
+      <Revela em={8} style={{ fontFamily: titulo, fontWeight: 800, fontSize: 54, lineHeight: 1.15, color: cores.branco, textAlign: "center", padding: "0 80px", marginTop: 1010 }}>
         Uma identidade que fala a língua da obra.
       </Revela>
       {ativo &&
@@ -378,8 +362,12 @@ const Identidade: React.FC<ReelsWGProps> = (props) => {
           return (
             <div key={item.titulo} style={{ position: "absolute", left: 80, right: 80, top: 1270, opacity: e, transform: `translateX(${(1 - e) * 200}px)` }}>
               <div style={{ display: "flex", alignItems: "center", gap: 24 }}>
-                <div style={{ width: 70, height: 70, borderRadius: 14, background: i === 0 ? amarelo : i === 1 ? preto : `repeating-linear-gradient(-45deg, ${amarelo} 0 12px, ${preto} 12px 24px)`, border: `4px solid ${amarelo}` }} />
-                <div style={{ fontFamily: fontes.titulo, fontWeight: 800, fontSize: 64, color: amarelo, letterSpacing: "0.04em" }}>{item.titulo}</div>
+                {i === 0 ? (
+                  <Logo {...props} largura={90} simbolo />
+                ) : (
+                  <div style={{ width: 70, height: 70, borderRadius: 14, backgroundColor: i === 1 ? amarelo : grafite, border: `4px solid ${amarelo}` }} />
+                )}
+                <div style={{ fontFamily: titulo, fontWeight: 800, fontSize: 46, color: amarelo }}>{item.titulo}</div>
               </div>
               <div style={{ fontFamily: fontes.texto, fontWeight: 500, fontSize: 44, lineHeight: 1.3, color: cores.branco, marginTop: 18 }}>{item.sentido}</div>
             </div>
@@ -411,11 +399,11 @@ const Numeros: React.FC<ReelsWGProps> = ({ numeros }) => {
         A WG EM NÚMEROS
       </div>
       <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", paddingBottom: 200 }}>
-        <div style={{ fontFamily: fontes.titulo, fontWeight: 800, fontSize: 330, lineHeight: 0.9, color: preto, transform: `scale(${0.4 + entra * 0.6}) rotate(${(1 - entra) * -8}deg)` }}>
+        <div style={{ fontFamily: titulo, fontWeight: 800, fontSize: 250, lineHeight: 0.9, color: preto, transform: `scale(${0.4 + entra * 0.6}) rotate(${(1 - entra) * -8}deg)` }}>
           {conta}
           {n.sufixo}
         </div>
-        <div style={{ fontFamily: fontes.titulo, fontWeight: 700, fontSize: 64, lineHeight: 1.1, color: preto, textAlign: "center", padding: "0 90px", opacity: prog(local, 8, 10) }}>{n.rotulo}</div>
+        <div style={{ fontFamily: titulo, fontWeight: 700, fontSize: 50, lineHeight: 1.1, color: preto, textAlign: "center", padding: "0 90px", opacity: prog(local, 8, 10) }}>{n.rotulo}</div>
       </AbsoluteFill>
       <div style={{ position: "absolute", left: 240, top: 1330 }}>
         <Cacamba largura={600} cor={preto} enche={enche} />
@@ -441,7 +429,7 @@ const Ciclo: React.FC<ReelsWGProps> = ({ ciclo }) => {
   return (
     <Cena>
       <Kicker top={200}>DO PEDIDO À TRIAGEM</Kicker>
-      <Revela em={4} style={{ fontFamily: fontes.titulo, fontWeight: 800, fontSize: 74, color: cores.branco, textAlign: "center", marginTop: 270, lineHeight: 1.05 }}>
+      <Revela em={4} style={{ fontFamily: titulo, fontWeight: 800, fontSize: 56, color: cores.branco, textAlign: "center", marginTop: 270, lineHeight: 1.05 }}>
         A marca acompanha
         <br />o ciclo inteiro.
       </Revela>
@@ -473,7 +461,7 @@ const Ciclo: React.FC<ReelsWGProps> = ({ ciclo }) => {
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
-                fontFamily: fontes.titulo,
+                fontFamily: titulo,
                 fontWeight: 800,
                 fontSize: 44,
                 color: on ? preto : amarelo,
@@ -482,7 +470,7 @@ const Ciclo: React.FC<ReelsWGProps> = ({ ciclo }) => {
             >
               {i + 1}
             </div>
-            <div style={{ fontFamily: fontes.titulo, fontWeight: 700, fontSize: 56, color: on ? cores.branco : "rgba(255,255,255,.5)", transform: `translateX(${(1 - e) * 60}px)` }}>{etapa}</div>
+            <div style={{ fontFamily: titulo, fontWeight: 700, fontSize: 42, color: on ? cores.branco : "rgba(255,255,255,.5)", transform: `translateX(${(1 - e) * 60}px)` }}>{etapa}</div>
           </div>
         );
       })}
@@ -503,41 +491,42 @@ const Aplicacao: React.FC<ReelsWGProps> = (props) => {
   return (
     <Cena>
       <Kicker top={200}>A MARCA EM USO</Kicker>
-      <Revela em={4} style={{ fontFamily: fontes.titulo, fontWeight: 800, fontSize: 74, color: cores.branco, textAlign: "center", marginTop: 270, lineHeight: 1.05 }}>
+      <Revela em={4} style={{ fontFamily: titulo, fontWeight: 800, fontSize: 56, color: cores.branco, textAlign: "center", marginTop: 270, lineHeight: 1.05 }}>
         Na rua, na obra
-        <br />e no celular.
+        <br />e no escritório.
       </Revela>
       {/* caminhão entrando com a caçamba marcada */}
       <div style={{ position: "absolute", left: 120 + anda, top: 520 }}>
-        <Caminhao largura={840} rodas={f * 14} carga={<Cacamba largura={560} marca={<Logo {...props} largura={200} sobreAmarelo />} />} />
+        <Caminhao largura={840} rodas={f * 14} carga={<Cacamba largura={560} marca={<Logo {...props} largura={210} />} />} />
       </div>
       <div style={{ position: "absolute", top: 1010, left: 0, right: 0, height: 6, backgroundColor: amarelo }} />
-      {/* cartões: uniforme e post */}
-      <div style={{ position: "absolute", top: 1110, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 40 }}>
-        <div style={{ width: 400, height: 520, borderRadius: 28, backgroundColor: amarelo, transform: `translateY(${(1 - card(0)) * 700}px) rotate(${-4 + (1 - card(0)) * -10}deg)`, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 30, boxShadow: "0 30px 60px rgba(0,0,0,.5)" }}>
-          {/* camiseta */}
-          <svg viewBox="0 0 200 200" width={260} height={260}>
-            <path d="M60 20 L30 40 L10 80 L40 95 L50 75 L50 185 L150 185 L150 75 L160 95 L190 80 L170 40 L140 20 Q100 45 60 20 z" fill={preto} />
-          </svg>
-          <div style={{ position: "absolute", top: 210 }}>
-            <Logo {...props} largura={110} />
-          </div>
-          <div style={{ fontFamily: fontes.titulo, fontWeight: 800, fontSize: 40, color: preto }}>Uniforme</div>
-        </div>
-        <div style={{ width: 400, height: 520, borderRadius: 28, backgroundColor: cores.branco, overflow: "hidden", transform: `translateY(${(1 - card(1)) * 700}px) rotate(${4 + (1 - card(1)) * 10}deg)`, boxShadow: "0 30px 60px rgba(0,0,0,.5)" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 14, padding: 20 }}>
-            <div style={{ width: 54, height: 54, borderRadius: 27, backgroundColor: preto, display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Logo {...props} largura={44} />
+      {/* fotos do manual: caçamba real e papelaria */}
+      <div style={{ position: "absolute", top: 1090, left: 0, right: 0, display: "flex", justifyContent: "center", gap: 36 }}>
+        {[
+          { foto: "clientes/wg-cacamba-foto.jpg", rotulo: "Caçamba" },
+          { foto: "clientes/wg-papelaria.jpg", rotulo: "Papelaria" },
+        ].map((c, i) => {
+          const e = card(i);
+          return (
+            <div
+              key={c.foto}
+              style={{
+                width: 430,
+                height: 580,
+                borderRadius: 28,
+                overflow: "hidden",
+                position: "relative",
+                backgroundColor: preto,
+                border: `5px solid ${amarelo}`,
+                transform: `translateY(${(1 - e) * 800}px) rotate(${(i ? 4 : -4) + (1 - e) * (i ? 12 : -12)}deg)`,
+                boxShadow: "0 30px 60px rgba(0,0,0,.45)",
+              }}
+            >
+              <Img src={staticFile(c.foto)} style={{ width: "100%", height: "100%", objectFit: "cover", transform: `scale(${1.15 - f * 0.0012})` }} />
+              <div style={{ position: "absolute", left: 0, right: 0, bottom: 0, padding: "18px 0", backgroundColor: amarelo, fontFamily: titulo, fontWeight: 800, fontSize: 32, color: preto, textAlign: "center" }}>{c.rotulo}</div>
             </div>
-            <div style={{ fontFamily: fontes.texto, fontWeight: 600, fontSize: 24, color: preto }}>wgambiental</div>
-          </div>
-          <div style={{ height: 340, backgroundColor: preto, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 20, position: "relative", overflow: "hidden" }}>
-            <Zebrado altura={30} style={{ top: 0 }} />
-            <Cacamba largura={260} />
-            <div style={{ fontFamily: fontes.titulo, fontWeight: 800, fontSize: 36, color: amarelo }}>Sua obra limpa</div>
-          </div>
-          <div style={{ fontFamily: fontes.titulo, fontWeight: 800, fontSize: 40, color: preto, textAlign: "center", paddingTop: 22 }}>Instagram</div>
-        </div>
+          );
+        })}
       </div>
     </Cena>
   );
@@ -555,7 +544,7 @@ const Fecho: React.FC<ReelsWGProps> = (props) => {
         <Logo {...props} largura={420} sobreAmarelo />
         <div style={{ textAlign: "center", padding: "0 70px" }}>
           {props.fecho.map((l, i) => (
-            <Revela key={l} em={6 + i * 8} style={{ fontFamily: fontes.titulo, fontWeight: 800, fontSize: 70, lineHeight: 1.08, color: preto }}>
+            <Revela key={l} em={6 + i * 8} style={{ fontFamily: titulo, fontWeight: 800, fontSize: 52, lineHeight: 1.15, color: preto }}>
               {l}
             </Revela>
           ))}
