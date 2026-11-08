@@ -11,6 +11,7 @@ import { FeedPost, feedPostPadrao } from "./FeedPost";
 import { DURACAO, FPS, Reels, reelsPadrao } from "./Reels";
 import { Carrossel, carrosselPadrao } from "./Carrossel";
 import { ESTILOS_DURACAO, ESTILOS_FPS, ReelsEstilos, reelsEstilosPadrao } from "./ReelsEstilos";
+import { ReelsWG, reelsWGPadrao, WG_DURACAO, WG_FPS } from "./ReelsWG";
 import { MATRIZ_DURACAO, MATRIZ_FPS, ReelsMatriz, reelsMatrizPadrao } from "./ReelsMatriz";
 import { MARCA_DURACAO, MARCA_FPS, ReelsMarca, reelsMarcaPadrao } from "./ReelsMarca";
 import { ERROS_DURACAO, ERROS_FPS, ReelsErros, reelsErrosPadrao } from "./ReelsErros";
@@ -59,6 +60,7 @@ export const Root: React.FC = () => (
       durationInFrames={MATRIZ_DURACAO}
       defaultProps={reelsMatrizPadrao}
     />
+    <Composition id="ReelsWG" component={ReelsWG} width={1080} height={1920} fps={WG_FPS} durationInFrames={WG_DURACAO} defaultProps={reelsWGPadrao} />
     <Composition
       id="ReelsEstilos"
       component={ReelsEstilos}
