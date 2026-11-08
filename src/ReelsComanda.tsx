@@ -33,7 +33,7 @@ export type ReelsComandaProps = {
 };
 
 export const reelsComandaPadrao: ReelsComandaProps = {
-  tema: "verde",
+  tema: "supermenu",
   gancho: ["Ainda paga", "taxa de app", "para vender o seu lanche?"],
   // Pedidos de exemplo iguais aos do print real do painel (sistemas/supermenu-pedidos.jpg).
   comandas: [
@@ -82,7 +82,7 @@ const Ticket: React.FC<{ c: Comanda; destaque: string; balanco: number }> = ({ c
       ))}
       <div style={{ borderTop: "3px dashed #999", margin: "14px 0" }} />
       <div style={{ fontWeight: 700, fontSize: 34 }}>{c.valor}</div>
-      <div style={{ fontSize: 22, marginTop: 6, color: "#0b7a43", fontWeight: 700 }}>taxa app: R$ 0,00</div>
+      <div style={{ fontSize: 22, marginTop: 6, color: "#C81D25", fontWeight: 700 }}>taxa app: R$ 0,00</div>
       <div style={{ position: "absolute", right: 18, top: 70, width: 26, height: 26, borderRadius: 13, backgroundColor: destaque, opacity: 0.0 }} />
     </div>
   </div>
@@ -239,7 +239,7 @@ const Combo: React.FC<{ combo: ReelsComandaProps["combo"]; t: (typeof temas)[str
           ))}
         </div>
       </div>
-      <div style={{ position: "absolute", left: 80, right: 80, top: 1000, textAlign: "center", fontFamily: fontes.titulo, fontWeight: 800, fontSize: 104, lineHeight: 1.04, color: t.destaque, opacity: p(f, 34, 12), transform: `translateY(${(1 - p(f, 34, 12)) * 60}px)` }}>
+      <div style={{ position: "absolute", left: 80, right: 80, top: 1000, textAlign: "center", fontFamily: fontes.titulo, fontWeight: 800, fontSize: 104, lineHeight: 1.04, color: t.texto, opacity: p(f, 34, 12), transform: `translateY(${(1 - p(f, 34, 12)) * 60}px)` }}>
         {combo.resultado}
       </div>
     </AbsoluteFill>

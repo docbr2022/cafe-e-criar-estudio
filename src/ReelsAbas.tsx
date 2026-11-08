@@ -31,7 +31,7 @@ export type ReelsAbasProps = {
 };
 
 export const reelsAbasPadrao: ReelsAbasProps = {
-  tema: "azul",
+  tema: "imobicore",
   gancho: ["Seus imóveis", "ainda espalhados", "em vários portais?"],
   abas: ["Portal 1", "Portal 2", "Portal 3", "Grupo de WhatsApp", "Planilha de imóveis"],
   endereco: "suaimobiliaria.com.br",

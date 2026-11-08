@@ -19,6 +19,10 @@ export const temas: Record<string, Tema> = {
   azul: { fundo: "#1F4FE0", fundoEscuro: "#0B2A8A", destaque: "#FFE400", texto: "#FFFFFF", logo: "#FFFFFF" },
   roxo: { fundo: "#6A3BD6", fundoEscuro: "#2E1470", destaque: "#FFE400", texto: "#FFFFFF", logo: "#FFFFFF" },
   verde: { fundo: "#0F9D58", fundoEscuro: "#06502C", destaque: "#FFE400", texto: "#FFFFFF", logo: "#FFFFFF" },
+  // paletas dos sites dos sistemas (08/11/2026, tiradas dos prints reais e da descrição do Danilo)
+  supermenu: { fundo: "#141414", fundoEscuro: "#C81D25", destaque: "#F26B0F", texto: "#FFFFFF", logo: "#F26B0F" },
+  barbersp: { fundo: "#0B0B0B", fundoEscuro: "#1C1C1E", destaque: "#F29C00", texto: "#FFFFFF", logo: "#BFC3C8" },
+  imobicore: { fundo: "#1B4FD1", fundoEscuro: "#001A40", destaque: "#6F9BFF", texto: "#FFFFFF", logo: "#FFFFFF" },
   preto: { fundo: "#000000", fundoEscuro: "#111111", destaque: "#FFE400", texto: "#FFFFFF", logo: "#FFE400" },
 };
 

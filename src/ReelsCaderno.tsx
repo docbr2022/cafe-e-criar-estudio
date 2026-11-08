@@ -34,7 +34,7 @@ export type ReelsCadernoProps = {
 };
 
 export const reelsCadernoPadrao: ReelsCadernoProps = {
-  tema: "preto",
+  tema: "barbersp",
   gancho: ["Sua agenda ainda", "mora no caderno", "e no WhatsApp?"],
   rabiscos: ["9h  Barba", "10h30  Cabelo ??", "12h  ~~Lucas~~ remarcou", "14h  Barba + cabelo", "15h  confirmar"],
   mensagens: ["tem horário hoje?", "e às 15h?", "pode ser amanhã?"],
@@ -259,7 +259,7 @@ const Poste: React.FC<ReelsCadernoProps> = ({ combo, tema }) => {
   return (
     <AbsoluteFill style={{ backgroundColor: t.fundo }}>
       <div style={{ position: "absolute", left: 465, top: 250, width: 150, height: 760, borderRadius: 75, overflow: "hidden", border: "10px solid #ddd", backgroundColor: "#fff" }}>
-        <div style={{ position: "absolute", inset: -200, backgroundImage: `repeating-linear-gradient(45deg, ${t.destaque} 0 40px, #ffffff 40px 80px, #111 80px 120px, #ffffff 120px 160px)`, transform: `translateY(${(f * 8) % 226}px)` }} />
+        <div style={{ position: "absolute", inset: -200, backgroundImage: `repeating-linear-gradient(45deg, ${t.destaque} 0 40px, #ffffff 40px 80px, #BFC3C8 80px 120px, #ffffff 120px 160px)`, transform: `translateY(${(f * 8) % 226}px)` }} />
       </div>
       <div style={{ position: "absolute", left: 60, top: 420, width: 370, transform: `translateX(${(1 - lado(1, 0)) * -500}px)` }}>
         <div style={{ fontFamily: fontes.texto, fontWeight: 600, fontSize: 30, letterSpacing: "0.16em", color: t.destaque }}>SISTEMA</div>
