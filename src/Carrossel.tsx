@@ -37,7 +37,7 @@ export type CarrosselProps = {
   // Texto gigante da capa; padrão = número de itens.
   numeroCapa?: string;
   // "numero" (padrão): capa preta com número gigante. "lista": capa e lâminas claras, em formato de checklist de papel.
-  // "navegador": cada lâmina é uma janela de navegador que vai carregando o site (tema roxo, fundo claro).
+  // "navegador": cada lâmina é uma janela de navegador que vai carregando o site (tema verde-petróleo, fundo claro).
   estilo?: "numero" | "lista" | "navegador";
   // Endereço mostrado na barra do navegador (estilo "navegador").
   dominio?: string;
@@ -330,17 +330,18 @@ const ItemLista: React.FC<{ n: number; item: ItemCarrossel; itens: ItemCarrossel
   );
 };
 
-// ---- Estilo "navegador": o site vai carregando lâmina a lâmina (tema roxo) ----
+// ---- Estilo "navegador": o site vai carregando lâmina a lâmina (tema verde-petróleo) ----
 const nav = {
-  fundo: "#F3F0FA",
+  // Verde-petróleo (tecnologia/negócios) com o amarelo da marca nos destaques. Evitar roxo (cara de IA), pedido do Danilo em 11/11/2026.
+  fundo: "#EEF4F3",
   branco: "#FFFFFF",
-  roxo: "#5B2BD9",
-  roxoEscuro: "#1B1036",
-  roxoNoite: "#120A26",
-  lilas: "#E4DCFA",
-  tinta: "#1A1530",
-  cinza: "#5E5873",
-  borda: "#DCD4F0",
+  roxo: "#0F6B6B", // cor principal do tema
+  roxoEscuro: "#0A3536",
+  roxoNoite: "#06292A",
+  lilas: "#D3E7E4",
+  tinta: "#0F2324",
+  cinza: "#536664",
+  borda: "#CFE0DD",
 };
 
 const iconesNav: Record<string, IconDefinition> = {
@@ -379,14 +380,14 @@ const Janela: React.FC<{
       backgroundColor: escuro ? nav.roxoEscuro : nav.branco,
       borderRadius: 28,
       overflow: "hidden",
-      boxShadow: escuro ? "0 30px 80px rgba(0,0,0,.45)" : "0 26px 70px rgba(43,20,110,.16)",
-      border: escuro ? "2px solid #34245F" : `2px solid ${nav.borda}`,
+      boxShadow: escuro ? "0 30px 80px rgba(0,0,0,.45)" : "0 26px 70px rgba(10,53,54,.16)",
+      border: escuro ? "2px solid #1E5354" : `2px solid ${nav.borda}`,
       display: "flex",
       flexDirection: "column",
       ...style,
     }}
   >
-    <div style={{ height: 86, display: "flex", alignItems: "center", gap: 14, padding: "0 30px", backgroundColor: escuro ? "#24174A" : "#F7F5FC" }}>
+    <div style={{ height: 86, display: "flex", alignItems: "center", gap: 14, padding: "0 30px", backgroundColor: escuro ? "#0E4344" : "#F7F5FC" }}>
       {["#ff5f57", "#febc2e", "#28c840"].map((c) => (
         <div key={c} style={{ width: 20, height: 20, borderRadius: 99, backgroundColor: c }} />
       ))}
@@ -396,7 +397,7 @@ const Janela: React.FC<{
           flex: 1,
           height: 50,
           borderRadius: 99,
-          backgroundColor: escuro ? "#120A26" : nav.branco,
+          backgroundColor: escuro ? "#06292A" : nav.branco,
           border: escuro ? "none" : `2px solid ${nav.borda}`,
           display: "flex",
           alignItems: "center",
@@ -405,14 +406,14 @@ const Janela: React.FC<{
           fontFamily: fontes.texto,
           fontWeight: 500,
           fontSize: 25,
-          color: escuro ? "#C9BDF2" : nav.cinza,
+          color: escuro ? "#A9CFCB" : nav.cinza,
         }}
       >
-        <Icone icone={faLock} tamanho={20} cor={escuro ? "#C9BDF2" : nav.roxo} />
+        <Icone icone={faLock} tamanho={20} cor={escuro ? "#A9CFCB" : nav.roxo} />
         {url}
       </div>
     </div>
-    <div style={{ height: 8, backgroundColor: escuro ? "#2E2058" : nav.lilas }}>
+    <div style={{ height: 8, backgroundColor: escuro ? "#1A5051" : nav.lilas }}>
       <div style={{ width: `${Math.round(carregado * 100)}%`, height: "100%", backgroundColor: escuro ? cores.amareloVivo : nav.roxo, borderRadius: "0 99px 99px 0" }} />
     </div>
     <div style={{ position: "relative", flex: 1 }}>{children}</div>
@@ -421,7 +422,7 @@ const Janela: React.FC<{
 
 const RodapeNav: React.FC<{ atual: number; total: number; escuro: boolean; arroba: string; seta: boolean }> = ({ atual, total, escuro, arroba, seta }) => (
   <div style={{ position: "absolute", left: 90, right: 90, bottom: 62, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-    <div style={{ fontFamily: fontes.texto, fontWeight: 500, fontSize: 28, color: escuro ? "#C9BDF2" : nav.cinza }}>{arroba}</div>
+    <div style={{ fontFamily: fontes.texto, fontWeight: 500, fontSize: 28, color: escuro ? "#A9CFCB" : nav.cinza }}>{arroba}</div>
     <div style={{ display: "flex", gap: 10 }}>
       {Array.from({ length: total }).map((_, i) => (
         <div
@@ -502,8 +503,8 @@ const CapaNav: React.FC<CarrosselProps & { total: number }> = ({ kicker, titulo,
             <Linha w={80} h={14} />
             <Linha w={80} h={14} />
           </div>
-          <Linha w={560} h={40} cor="#CFC2F5" style={{ marginTop: 14, flexShrink: 0 }} />
-          <Linha w={400} h={40} cor="#CFC2F5" style={{ flexShrink: 0 }} />
+          <Linha w={560} h={40} cor="#B5D8D3" style={{ marginTop: 14, flexShrink: 0 }} />
+          <Linha w={400} h={40} cor="#B5D8D3" style={{ flexShrink: 0 }} />
                     <div
             style={{
               alignSelf: "flex-start",
@@ -545,7 +546,7 @@ const MotivoNav: React.FC<CarrosselProps & { n: number; total: number }> = ({ n,
         <div style={{ fontFamily: fontes.texto, fontWeight: 600, fontSize: 30, letterSpacing: "0.16em", color: escuro ? cores.amareloVivo : nav.roxo }}>
           {`${rotulo ?? "MOTIVO"} ${n} DE ${itens.length}`}
         </div>
-        <div style={{ fontFamily: fontes.texto, fontWeight: 500, fontSize: 26, color: escuro ? "#C9BDF2" : nav.cinza }}>{`carregando ${Math.round(carregado * 100)}%`}</div>
+        <div style={{ fontFamily: fontes.texto, fontWeight: 500, fontSize: 26, color: escuro ? "#A9CFCB" : nav.cinza }}>{`carregando ${Math.round(carregado * 100)}%`}</div>
       </div>
       <Janela url={url} carregado={carregado} escuro={escuro} style={{ left: 70, right: 70, top: 170, bottom: 190 }}>
         <div style={{ position: "absolute", inset: 0, padding: "64px 60px", display: "flex", flexDirection: "column", gap: 38 }}>
@@ -564,7 +565,7 @@ const MotivoNav: React.FC<CarrosselProps & { n: number; total: number }> = ({ n,
             <Icone icone={iconesNav[item.icone ?? "casa"] ?? faHouse} tamanho={78} cor={escuro ? nav.roxoEscuro : nav.branco} />
           </div>
           <h1 style={{ margin: 0, fontFamily: fontes.titulo, fontWeight: 800, fontSize: 96, lineHeight: 1.04, color: escuro ? nav.branco : nav.tinta }}>{item.titulo}</h1>
-          <div style={{ fontFamily: fontes.texto, fontSize: 42, lineHeight: 1.5, color: escuro ? "#D9D1F5" : nav.cinza }}>{item.texto}</div>
+          <div style={{ fontFamily: fontes.texto, fontSize: 42, lineHeight: 1.5, color: escuro ? "#CFE5E2" : nav.cinza }}>{item.texto}</div>
         </div>
       </Janela>
       <RodapeNav atual={n} total={total} escuro={escuro} arroba={arroba} seta />
@@ -576,10 +577,10 @@ const FechamentoNav: React.FC<CarrosselProps & { total: number }> = ({ fechament
   const i = fechamento.destaque ? fechamento.titulo.indexOf(fechamento.destaque) : -1;
   return (
     <AbsoluteFill style={{ backgroundColor: nav.roxoEscuro }}>
-      <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 30%, rgba(91,43,217,.55), transparent 62%)" }} />
+      <AbsoluteFill style={{ background: "radial-gradient(circle at 50% 30%, rgba(15,107,107,.6), transparent 62%)" }} />
       <div style={{ position: "absolute", left: 90, right: 90, top: 92, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
         <div style={{ fontFamily: fontes.texto, fontWeight: 600, fontSize: 30, letterSpacing: "0.16em", color: cores.amareloVivo }}>SITE PRONTO</div>
-        <div style={{ fontFamily: fontes.texto, fontWeight: 500, fontSize: 26, color: "#C9BDF2" }}>carregado 100%</div>
+        <div style={{ fontFamily: fontes.texto, fontWeight: 500, fontSize: 26, color: "#A9CFCB" }}>carregado 100%</div>
       </div>
       <Janela url={`${dominio ?? "suaempresa.com.br"}/diagnostico`} carregado={1} escuro style={{ left: 70, right: 70, top: 170, bottom: 190 }}>
         <div style={{ position: "absolute", inset: 0, padding: "56px 56px", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 34 }}>
@@ -595,7 +596,7 @@ const FechamentoNav: React.FC<CarrosselProps & { total: number }> = ({ fechament
               </>
             )}
           </h1>
-          <div style={{ fontFamily: fontes.texto, fontSize: 34, lineHeight: 1.5, color: "#D9D1F5" }}>{fechamento.texto}</div>
+          <div style={{ fontFamily: fontes.texto, fontSize: 34, lineHeight: 1.5, color: "#CFE5E2" }}>{fechamento.texto}</div>
           <div
             style={{
               display: "flex",
@@ -614,8 +615,8 @@ const FechamentoNav: React.FC<CarrosselProps & { total: number }> = ({ fechament
             <Icone icone={faCalendarCheck} tamanho={46} cor={nav.roxoEscuro} />
             {fechamento.cta}
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 14, fontFamily: fontes.texto, fontWeight: 500, fontSize: 30, color: "#C9BDF2" }}>
-            <Icone icone={faWhatsapp} tamanho={34} cor="#C9BDF2" />
+          <div style={{ display: "flex", alignItems: "center", gap: 14, fontFamily: fontes.texto, fontWeight: 500, fontSize: 30, color: "#A9CFCB" }}>
+            <Icone icone={faWhatsapp} tamanho={34} cor="#A9CFCB" />
             Chame no WhatsApp ou no direct
           </div>
         </div>
