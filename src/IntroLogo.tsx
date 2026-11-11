@@ -37,7 +37,7 @@ const mix = (a: number, b: number, t: number) => a + (b - a) * t;
 // O letreiro é desenhado na escala k sobre as coordenadas do logo-full.png.
 const LARGURA_LETREIRO = LETREIRO.x1 - LETREIRO.x0;
 const ALTURA_LETREIRO = LETREIRO.y1 - LETREIRO.y0;
-const usarLayout = (width: number, height: number) => {
+export const usarLayout = (width: number, height: number) => {
   const deitado = width > height * 1.2;
   if (deitado) {
     const u = height / 1080;
