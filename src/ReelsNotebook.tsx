@@ -38,7 +38,7 @@ export const reelsNotebookPadrao: ReelsNotebookProps = {
   videoInicio: 30,
   cliente: ["Inovação", "Assessoria Contábil"],
   kicker: "SITE NOVO NO AR",
-  endereco: "Inovação Assessoria Contábil",
+  endereco: "contabilinovacaoassessoria.com.br",
   tema: { fundo: "#050C18", profundo: "#0C1B33", ouro: "#C9A45C", ouroClaro: "#E8CF95", texto: "#F4EFE4" },
   legendas: [
     { de: 60, ate: 140, numero: "01", linha: "Primeira impressão", destaque: "que passa confiança." },
